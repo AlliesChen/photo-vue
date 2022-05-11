@@ -1,0 +1,93 @@
+.absolute {
+  position: absolute;
+}
+
+.flex {
+  display: flex;
+}
+  
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.flex-col-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.flex-col-end {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.flex-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.p-1 {
+  padding: 1rem;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.m-1 {
+  margin: 1rem;
+}
+
+.bg-black {
+  background-color: black;
+}
+
+.bg-black-trans {
+  background-color: rgba(0,0,0, .3);
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-magenta {
+  color: rgb(255, 0, 200);
+}
+
+.text-cyan {
+  color: rgb(0, 200, 255);
+}
+
+.events-none {
+  pointer-events: none;
+}
+
+.events-fill {
+  pointer-events: fill;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.none {
+  display: none;
+}
