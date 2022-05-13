@@ -1,0 +1,38 @@
+@mixin setJustify($alignments...) {
+  @for $i from 0 to length($alignments) {
+    .justify-#{nth($alignments, $i + 1)} {
+      justify-content: #{nth($alignments, $i + 1)};
+    }
+  }
+}
+
+@mixin setItems($alignments...) {
+  @for $i from 0 to length($alignments) {
+    .items-#{nth($alignments, $i + 1)} {
+      align-items: #{nth($alignments, $i + 1)};
+    }
+  }
+}
+
+@mixin setRounded($rounded: 0.25rem) {
+  .rounded-sm {
+    border-radius: calc($rounded / 2);
+  }
+  .rounded {
+    border-radius: $rounded;
+  }
+  .rounded-lg {
+    border-radius: calc($rounded * 2);
+  }
+  .rounded-full {
+    border-radius: 50%;
+  }
+}
+
+@mixin setRight($multiplicand...) {
+  @for $i from 0 to length($multiplicand) {
+    .right-#{nth($multiplicand, $i + 1)} {
+      right: calc(#{nth($multiplicand, $i + 1)} * 0.25rem);
+    }
+  }
+}

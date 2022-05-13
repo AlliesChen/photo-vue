@@ -1,23 +1,33 @@
 <template>
   <div id="app">
-    <FunctionBar />
+    <Header-Bar />
+    <File-Window />
+    <Footer-Bar />
   </div>
 </template>
 
 <script>
-import FunctionBar from "./components/FunctionBar.vue";
+import HeaderBar from "./views/HeaderBar.vue";
+import FileWindow from "./views/FileWindow.vue";
+import FooterBar from "./views/FooterBar.vue";
 
 export default {
   name: "App",
   components: {
-    FunctionBar,
+    HeaderBar,
+    FileWindow,
+    FooterBar,
   },
 };
 </script>
 
 <style lang="scss">
+@use "styles/main";
+@include main.setJustify(center, space-around, flex-start);
+@include main.setItems(center);
+@include main.setRounded();
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap");
-@import url("./styles/basics.css");
+@import url("styles/basics.css");
 
 :root {
   --corner-position: 0.4rem;
@@ -42,12 +52,6 @@ body {
 button {
   background: none;
   border: none;
-}
-
-button[data-active="false"],
-input[data-active="false"] {
-  width: 0;
-  height: 0;
-  visibility: hidden;
+  cursor: pointer;
 }
 </style>
