@@ -1,10 +1,8 @@
 <script>
 export default {
   methods: {
-    useMutation(e) {
-      const el = e.target.closest("[data-to]");
-      const [state, target] = el.dataset.to.match(/(\w+)/g);
-      console.log(target);
+    switchScene(el) {
+      const [state, target] = el.to.match(/(\w+)/g);
       let mutation;
       switch (state) {
         case "page":

@@ -3,12 +3,11 @@
     <h2 class="text-white">0張相片</h2>
     <button
       v-for="btn in btns"
-      :key="btn.name"
+      @click.capture="switchScene(btn)"
+      :key="btn.uuid"
       :class="[
         currentMode === btn.mode ? 'btn rectangle rounded right-16' : 'none',
       ]"
-      :data-to="btn.to"
-      @click="useMutation"
     >
       {{ btn.text }}
     </button>
@@ -27,13 +26,13 @@ export default {
     return Object.freeze({
       btns: [
         {
-          name: "picker",
+          uuid: this.$uuid.v1(),
           text: "選取",
           mode: "browse",
           to: "mode-selection",
         },
         {
-          name: "anti-picker",
+          uuid: this.$uuid.v1(),
           text: "取消",
           mode: "selection",
           to: "mode-browse",
@@ -44,26 +43,6 @@ export default {
   computed: {
     currentMode() {
       return this.$store.getters.currentMode;
-    },
-  },
-  methods: {
-    getFileNames: async function (items) {
-      // this.axios.defaults.baseURL = "http://127.0.0.1:8080";
-      try {
-        const response = await this.axios({
-          url: `/${items}`,
-          baseURL: "http://127.0.0.1:8080",
-        });
-        const data = response.data;
-        // in case no file exists
-        if (!data) {
-          return [];
-        }
-        const fileNames = data.map((item) => item.slice(0));
-        return fileNames;
-      } catch (err) {
-        throw new Error(err);
-      }
     },
   },
 };

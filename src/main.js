@@ -1,11 +1,10 @@
 import Vue from "vue";
 import App from "./App.vue";
-import axios from "axios";
-import VueAxios from "vue-axios";
+import UUID from "vue-uuid";
 import VueFeather from "vue-feather";
 import store from "./store";
 
-Vue.use(VueAxios, axios);
+Vue.use(UUID);
 Vue.use(VueFeather);
 Vue.config.productionTip = false;
 

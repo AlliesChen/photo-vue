@@ -16,8 +16,10 @@
 <script>
 export default {
   methods: {
-    uploadFiles: async function (e) {
-      console.log(e.target.files);
+    uploadFiles(e) {
+      this.$store.dispatch("uploadFiles", e.target.files).then(() => {
+        e.target.value = "";
+      });
     },
   },
 };

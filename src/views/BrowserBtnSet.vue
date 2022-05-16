@@ -1,11 +1,12 @@
 <template>
-  <div class="flex h-full" @click="useMutation">
+  <div class="flex h-full">
     <div
       v-for="btn in btns"
-      :key="btn.name"
-      :data-to="btn.to"
+      @click.capture="switchScene(btn)"
+      :key="btn.uuid"
       :class="[
-        currentPage === btn.name ? 'text-cyan' : '',
+        // match the page name
+        currentPage === btn.to.match(/(\w+)/g)[1] ? 'text-cyan' : '',
         'btn',
         'flex-col justify-flex-start items-center h-full',
       ]"
@@ -25,19 +26,19 @@ export default {
     return {
       btns: [
         {
-          name: "photos",
+          uuid: this.$uuid.v1(),
           icon: "image",
           text: "圖庫",
-          to: "page-photos",
+          to: "page-images",
         },
         {
-          name: "videos",
+          uuid: this.$uuid.v1(),
           icon: "video",
           text: "影片",
           to: "page-videos",
         },
         {
-          name: "albums",
+          uuid: this.$uuid.v1(),
           icon: "book",
           text: "相簿",
           to: "page-albums",
