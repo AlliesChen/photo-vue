@@ -64,6 +64,16 @@ export default new Vuex.Store({
         name: image,
       }));
     },
+    vidThumbnails: (state) => {
+      return state.videos.map((video) => {
+        const fileExt = video.match(/(?:\.)(\w+)$/)[0];
+        return {
+          src: `http://127.0.0.1:8080/video/${video}`,
+          type: `video/${fileExt}`,
+          name: video,
+        };
+      });
+    },
   },
   mutations: {
     usePage(state, target) {

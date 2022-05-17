@@ -1,27 +1,22 @@
 <template>
   <div class="flex h-full">
-    <div
+    <router-link
       v-for="btn in btns"
-      @click.capture="switchScene(btn)"
       :key="btn.uuid"
-      :class="[
-        // match the page name
-        currentPage === btn.to.match(/(\w+)/g)[1] ? 'text-cyan' : '',
-        'btn',
-        'flex-col justify-flex-start items-center h-full',
-      ]"
+      :to="btn.to"
+      @click.native="usePage(btn.to)"
+      class="btn flex-col justify-flex-start items-center h-full"
+      :class="[currentPage === btn.to.slice(1) ? 'text-cyan' : 'text-black']"
     >
       <feather :type="btn.icon" />
       <small>{{ btn.text }}</small>
-    </div>
+    </router-link>
   </div>
 </template>
 
 <script>
-import FunctionMixin from "./FunctionMixin.vue";
 export default {
-  mixins: [FunctionMixin],
-  name: "BrowserBtnSet",
+  name: "PageSwitch",
   data() {
     return {
       btns: [
@@ -29,19 +24,19 @@ export default {
           uuid: this.$uuid.v1(),
           icon: "image",
           text: "圖庫",
-          to: "page-images",
+          to: "/images",
         },
         {
           uuid: this.$uuid.v1(),
           icon: "video",
           text: "影片",
-          to: "page-videos",
+          to: "/videos",
         },
         {
           uuid: this.$uuid.v1(),
           icon: "book",
           text: "相簿",
-          to: "page-albums",
+          to: "/albums",
         },
       ],
     };
@@ -52,11 +47,13 @@ export default {
     },
   },
   methods: {
-    usePage(e) {
-      const target = e.target.closest("div[data-name]");
-      const page = target.dataset.name;
+    usePage(query) {
+      const page = query.slice(1);
       this.$store.commit("usePage", page);
     },
+  },
+  mounted() {
+    this.$store.commit("usePage", this.$route.name);
   },
 };
 </script>
@@ -64,15 +61,15 @@ export default {
 <style scoped lang="scss">
 .btn {
   flex: auto;
-  cursor: pointer;
+  text-decoration: none;
   &:active {
-    background-color: rgba(0, 0, 0, 0.3);
-    color: aquamarine;
+    background-color: var(--cyan-dark);
+    color: var(--cyan-light);
   }
   @media only screen and (min-width: 480px) {
     &:hover {
-      background-color: rgba(0, 0, 0, 0.3);
-      color: aquamarine;
+      background-color: var(--cyan-dark);
+      color: var(--cyan-light);
     }
   }
 }

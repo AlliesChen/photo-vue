@@ -1,17 +1,23 @@
 <template>
   <ol class="m-0 p-0 flex">
-    <li v-for="list in lists" :key="list.name">
-      <img :src="list.src" :alt="list.name" />
+    <li v-for="item in videos" :key="item.uuid">
+      <video>
+        <source :src="item.src" :type="item.type" />
+        Sorry, the video cannot be played.
+      </video>
     </li>
   </ol>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      lists: [],
-    };
+  name: "VideoGallery",
+  computed: {
+    videos() {
+      return this.$store.getters.vidThumbnails.map((item) =>
+        Object.assign(item, { uuid: this.$uuid.v1() })
+      );
+    },
   },
   mounted() {
     this.$store.dispatch("getFileNames", "videos");
@@ -29,7 +35,7 @@ ol {
     color: black;
   }
 }
-img {
+video {
   width: 100%;
   height: 100%;
   object-fit: contain;

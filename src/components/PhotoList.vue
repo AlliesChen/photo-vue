@@ -1,6 +1,6 @@
 <template>
   <ol class="m-0 p-0 flex">
-    <li v-for="item in thumbnails" :key="item.name">
+    <li v-for="item in thumbnails" :key="item.uuid">
       <img :src="item.src" :alt="item.name" />
     </li>
   </ol>
@@ -8,9 +8,12 @@
 
 <script>
 export default {
+  name: "PhotoGallery",
   computed: {
     thumbnails() {
-      return this.$store.getters.thumbnails;
+      return this.$store.getters.thumbnails.map((item) =>
+        Object.assign(item, { uuid: this.$uuid.v1() })
+      );
     },
   },
   mounted() {

@@ -1,16 +1,11 @@
 <template>
   <main class="main flex w-full">
-    <Photo-List />
-    <Video-List />
+    <router-view />
   </main>
 </template>
 
 <script>
-import PhotoList from "../components/PhotoList.vue";
-import VideoList from "../components/VideoList.vue";
-export default {
-  components: { PhotoList, VideoList },
-};
+export default {};
 </script>
 
 <style scoped>

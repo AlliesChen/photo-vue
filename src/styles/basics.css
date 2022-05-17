@@ -47,18 +47,6 @@
   font-size: 1.25rem;
 }
 
-.text-white {
-  color: white;
-}
-
-.text-magenta {
-  color: rgb(255, 0, 200);
-}
-
-.text-cyan {
-  color: rgb(0, 200, 255);
-}
-
 .events-none {
   pointer-events: none;
 }

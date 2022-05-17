@@ -3,7 +3,7 @@
     <h2 class="text-white">0張相片</h2>
     <button
       v-for="btn in btns"
-      @click.capture="switchScene(btn)"
+      @click.capture="useMode(btn.to)"
       :key="btn.uuid"
       :class="[
         currentMode === btn.mode ? 'btn rectangle rounded right-16' : 'none',
@@ -16,11 +16,9 @@
 </template>
 
 <script>
-import FunctionMixin from "./FunctionMixin.vue";
 import UploadBtn from "../components/UploadBtn.vue";
 export default {
   name: "HeaderBar",
-  mixins: [FunctionMixin],
   components: { UploadBtn },
   data() {
     return Object.freeze({
@@ -29,13 +27,13 @@ export default {
           uuid: this.$uuid.v1(),
           text: "選取",
           mode: "browse",
-          to: "mode-selection",
+          to: "selection",
         },
         {
           uuid: this.$uuid.v1(),
           text: "取消",
           mode: "selection",
-          to: "mode-browse",
+          to: "browse",
         },
       ],
     });
@@ -43,6 +41,11 @@ export default {
   computed: {
     currentMode() {
       return this.$store.getters.currentMode;
+    },
+  },
+  methods: {
+    useMode(mode) {
+      this.$store.commit("useMode", mode);
     },
   },
 };

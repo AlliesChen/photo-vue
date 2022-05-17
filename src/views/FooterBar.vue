@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <Browser-Btn-Set v-if="currentMode === 'browse'" />
+    <Page-Switch v-if="currentMode === 'browse'" />
     <div v-if="currentMode === 'selection'" class="flex justify-space-around">
       <button disabled="true" class="flex">
         <feather type="external-link" />
@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import BrowserBtnSet from "./BrowserBtnSet.vue";
+import PageSwitch from "./PageSwitch.vue";
 export default {
-  components: { BrowserBtnSet },
+  components: { PageSwitch },
   computed: {
     currentMode() {
       return this.$store.getters.currentMode;

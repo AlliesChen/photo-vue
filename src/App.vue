@@ -1,21 +1,21 @@
 <template>
   <div id="app">
     <Header-Bar />
-    <File-Window />
+    <File-Pages />
     <Footer-Bar />
   </div>
 </template>
 
 <script>
 import HeaderBar from "./views/HeaderBar.vue";
-import FileWindow from "./views/FileWindow.vue";
+import FilePages from "./views/FilePages.vue";
 import FooterBar from "./views/FooterBar.vue";
 
 export default {
   name: "App",
   components: {
     HeaderBar,
-    FileWindow,
+    FilePages,
     FooterBar,
   },
 };
@@ -32,6 +32,14 @@ export default {
 :root {
   --corner-position: 0.4rem;
   --font-noto-sans: "Noto Sans TC", sans-serif;
+  --white: white;
+  --black: black;
+  --pink-light: rgb(252, 231, 243);
+  --pink: rgb(236, 72, 153);
+  --pink-dark: rgb(131, 24, 67);
+  --cyan-light: rgb(207, 250, 254);
+  --cyan: rgb(6, 182, 212);
+  --cyan-dark: rgb(22, 78, 99);
 }
 
 body {
@@ -53,5 +61,21 @@ button {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+.text-white {
+  color: var(--white);
+}
+
+.text-black {
+  color: var(--black);
+}
+
+.text-pink {
+  color: var(--pink);
+}
+
+.text-cyan {
+  color: var(--cyan);
 }
 </style>
