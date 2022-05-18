@@ -30,6 +30,7 @@ export default {
 @include main.setJustify(center, space-around, flex-start);
 @include main.setItems(center);
 @include main.setRounded();
+@include main.setPosition(absolute, relative, sticky);
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap");
 @import url("styles/basics.css");
 

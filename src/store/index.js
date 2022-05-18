@@ -9,7 +9,7 @@ export default new Vuex.Store({
     pages: [
       {
         name: "images",
-        isCurrent: true,
+        isCurrent: false,
       },
       {
         name: "videos",
@@ -53,7 +53,7 @@ export default new Vuex.Store({
   },
   getters: {
     currentPage: (state) => {
-      return state.pages.find((page) => page.isCurrent === true).name;
+      return state.pages.find((page) => page.isCurrent === true)?.name;
     },
     currentMode: (state) => {
       return state.modes.find((mode) => mode.isCurrent === true).name;

@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer class="footer sticky">
     <Page-Switch v-if="currentMode === 'browse'" />
     <div v-if="currentMode === 'selection'" class="flex justify-space-around">
       <button disabled="true" class="flex">
@@ -27,7 +27,6 @@ export default {
 
 <style scoped>
 .footer {
-  position: sticky;
   bottom: 0;
   height: 4rem;
   background-color: white;

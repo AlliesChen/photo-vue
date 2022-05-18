@@ -36,3 +36,27 @@
     }
   }
 }
+
+@mixin setTop($multiplicand...) {
+  @for $i from 0 to length($multiplicand) {
+    .top-#{nth($multiplicand, $i + 1)} {
+      top: calc(#{nth($multiplicand, $i + 1)} * 0.25rem);
+    }
+  }
+}
+
+@mixin setBottom($multiplicand...) {
+  @for $i from 0 to length($multiplicand) {
+    .bottom-#{nth($multiplicand, $i + 1)} {
+      bottom: calc(#{nth($multiplicand, $i + 1)} * 0.25rem);
+    }
+  }
+}
+
+@mixin setPosition($positions...) {
+  @for $i from 0 to length($positions) {
+    .#{nth($positions, $i + 1)} {
+      position: #{nth($positions, $i + 1)};
+    }
+  }
+}

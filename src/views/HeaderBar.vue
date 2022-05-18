@@ -1,17 +1,19 @@
 <template>
-  <header class="header justify-center items-center">
+  <header class="header sticky justify-center items-center">
     <h2 class="text-white">{{ this.fileCounter }}</h2>
     <button
       v-for="btn in btns"
       @click.capture="useMode(btn.to)"
       :key="btn.uuid"
-      :class="[
-        currentMode === btn.mode ? 'btn rectangle rounded right-16' : 'none',
-      ]"
+      :class="
+        currentMode === btn.mode
+          ? 'btn absolute rectangle rounded right-16'
+          : 'none'
+      "
     >
       {{ btn.text }}
     </button>
-    <Upload-Btn class="btn right-4" />
+    <Upload-Btn class="btn absolute right-4" />
   </header>
 </template>
 
@@ -77,7 +79,6 @@ export default {
 @include main.setRight(4, 16);
 
 .header {
-  position: sticky;
   z-index: 2;
   top: 0;
   width: 100%;
@@ -93,7 +94,6 @@ export default {
 
 .btn {
   font-size: 1rem;
-  position: absolute;
   color: white;
   background-color: gray;
 }
