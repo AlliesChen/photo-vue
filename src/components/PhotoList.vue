@@ -1,6 +1,11 @@
 <template>
-  <ol class="m-0 p-0" @click="clickEvent">
-    <li v-for="item in thumbnails" :key="item.uuid" class="relative">
+  <ol class="m-0 p-0">
+    <li
+      v-for="(item, index) in thumbnails"
+      :key="item.name"
+      @click="setFile(index)"
+      class="relative"
+    >
       <img :src="item.src" :alt="item.name" />
       <div v-show="currentMode === 'selection'" class="mask absolute top-0">
         <feather
@@ -16,24 +21,19 @@
 <script>
 export default {
   name: "PhotoGallery",
-  data() {
-    return {
-      isSelect: [],
-    };
-  },
   computed: {
     thumbnails() {
-      return this.$store.getters.thumbnails.map((item) =>
-        Object.assign(item, { uuid: this.$uuid.v1(), isSelect: false })
-      );
+      return this.$store.getters.thumbnails;
     },
     currentMode() {
       return this.$store.getters.currentMode;
     },
   },
   methods: {
-    clickEvent(e) {
-      console.log(e.target);
+    setFile(index) {
+      if (this.currentMode === "selection") {
+        this.$store.commit("setSelected", ["images", index]);
+      }
     },
   },
 };

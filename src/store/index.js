@@ -41,17 +41,15 @@ export default new Vuex.Store({
     // Base on backend api address
     // images name list
     images: [],
-    // thumbnails
-    "image-xs": [],
-    // origin
-    image: [],
     // videos name list
     videos: [],
-    video: [],
     // albums name list
     albums: [],
   },
   getters: {
+    checkItem: (state) => (type, index) => {
+      return state[type][index];
+    },
     currentPage: (state) => {
       return state.pages.find((page) => page.isCurrent === true)?.name;
     },
@@ -60,8 +58,8 @@ export default new Vuex.Store({
     },
     thumbnails: (state) => {
       return state.images.map((image) => ({
-        src: `http://127.0.0.1:8080/image-xs/${image}`,
-        name: image,
+        ...image,
+        src: `http://127.0.0.1:8080/image-xs/${image.name}`,
       }));
     },
     vidThumbnails: (state) => {
@@ -101,7 +99,12 @@ export default new Vuex.Store({
       });
     },
     listFiles(state, [type, items]) {
-      state[type].unshift(...items);
+      const files = items.map((item) => ({ name: item, isSelect: false }));
+      state[type].unshift(...files);
+    },
+    setSelected(state, [type, index]) {
+      state[type][index].isSelect = !this.getters.checkItem(type, index)
+        .isSelect;
     },
   },
   actions: {

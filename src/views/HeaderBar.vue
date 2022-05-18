@@ -3,7 +3,7 @@
     <h2 class="text-white">{{ this.fileCounter }}</h2>
     <button
       v-for="btn in btns"
-      @click.capture="useMode(btn.to)"
+      @click="useMode(btn.to)"
       :key="btn.uuid"
       :class="
         currentMode === btn.mode
