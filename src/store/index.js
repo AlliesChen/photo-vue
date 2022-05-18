@@ -74,6 +74,12 @@ export default new Vuex.Store({
         };
       });
     },
+    imageQty: (state) => {
+      return state.images.length;
+    },
+    videoQty: (state) => {
+      return state.videos.length;
+    },
   },
   mutations: {
     usePage(state, target) {

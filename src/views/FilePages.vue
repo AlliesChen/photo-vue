@@ -1,5 +1,5 @@
 <template>
-  <main class="main flex w-full">
+  <main class="main">
     <router-view />
   </main>
 </template>
@@ -12,7 +12,6 @@ export default {};
 .main {
   /* header and footer are both 8 rem height */
   min-height: calc(100vh - 8rem);
-  align-content: flex-start;
-  flex-wrap: wrap;
+  width: 100%;
 }
 </style>

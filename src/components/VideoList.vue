@@ -19,9 +19,6 @@ export default {
       );
     },
   },
-  mounted() {
-    this.$store.dispatch("getFileNames", "videos");
-  },
 };
 </script>
 

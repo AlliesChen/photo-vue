@@ -1,6 +1,6 @@
 <template>
   <header class="header justify-center items-center">
-    <h2 class="text-white">0張相片</h2>
+    <h2 class="text-white">{{ this.fileCounter }}</h2>
     <button
       v-for="btn in btns"
       @click.capture="useMode(btn.to)"
@@ -41,6 +41,26 @@ export default {
   computed: {
     currentMode() {
       return this.$store.getters.currentMode;
+    },
+    currentPage() {
+      return this.$store.getters.currentPage;
+    },
+    fileCounter() {
+      let counter;
+      let header;
+      switch (this.currentPage) {
+        case "images":
+          counter = this.$store.getters.imageQty;
+          header = `${counter}張相片`;
+          break;
+        case "videos":
+          counter = this.$store.getters.videoQty;
+          header = `${counter}部影片`;
+          break;
+        default:
+          header = "0個檔案";
+      }
+      return header;
     },
   },
   methods: {

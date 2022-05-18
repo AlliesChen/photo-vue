@@ -18,6 +18,10 @@ export default {
     FilePages,
     FooterBar,
   },
+  mounted() {
+    this.$store.dispatch("getFileNames", "images");
+    this.$store.dispatch("getFileNames", "videos");
+  },
 };
 </script>
 
