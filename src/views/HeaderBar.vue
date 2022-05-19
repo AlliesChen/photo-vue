@@ -1,6 +1,6 @@
 <template>
   <header class="header sticky justify-center items-center">
-    <h2 class="text-white">{{ this.fileCounter }}</h2>
+    <h2 class="text-white">{{ this.headerTitle }}</h2>
     <button
       v-for="btn in btns"
       @click="useMode(btn.to)"
@@ -18,9 +18,11 @@
 </template>
 
 <script>
+import CommonInfo from "../components/mixin/CommonInfo.vue";
 import UploadBtn from "../components/UploadBtn.vue";
 export default {
   name: "HeaderBar",
+  mixins: [CommonInfo],
   components: { UploadBtn },
   data() {
     return Object.freeze({
@@ -41,28 +43,19 @@ export default {
     });
   },
   computed: {
-    currentMode() {
-      return this.$store.getters.currentMode;
-    },
-    currentPage() {
-      return this.$store.getters.currentPage;
-    },
-    fileCounter() {
+    headerTitle() {
       let counter;
-      let header;
       switch (this.currentPage) {
         case "images":
           counter = this.$store.getters.imageQty;
-          header = `${counter}張相片`;
-          break;
+          return `${counter}張相片`;
         case "videos":
           counter = this.$store.getters.videoQty;
-          header = `${counter}部影片`;
-          break;
+          return `${counter}部影片`;
         default:
-          header = "0個檔案";
+          counter = 0;
+          return `${counter}個檔案`;
       }
-      return header;
     },
   },
   methods: {

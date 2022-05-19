@@ -15,8 +15,10 @@
 </template>
 
 <script>
+import CommonInfo from "../components/mixin/CommonInfo.vue";
 export default {
   name: "PageSwitch",
+  mixins: [CommonInfo],
   data() {
     return {
       btns: [
@@ -40,11 +42,6 @@ export default {
         },
       ],
     };
-  },
-  computed: {
-    currentPage() {
-      return this.$store.getters.currentPage;
-    },
   },
   methods: {
     usePage(query) {

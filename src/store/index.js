@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import axios from "axios";
 
 Vue.use(Vuex);
+axios.defaults.baseURL = "http://127.0.0.1:8080";
 
 export default new Vuex.Store({
   state: {
@@ -47,9 +48,9 @@ export default new Vuex.Store({
     albums: [],
   },
   getters: {
-    checkItem: (state) => (type, index) => {
-      return state[type][index];
-    },
+    checkItem: (state) => (type, index) => state[type][index],
+    checkIndex: (state) => (type, name) =>
+      state[type].map((item) => item.name).indexOf(name),
     currentPage: (state) => {
       return state.pages.find((page) => page.isCurrent === true)?.name;
     },
@@ -64,7 +65,7 @@ export default new Vuex.Store({
     },
     vidThumbnails: (state) => {
       return state.videos.map((video) => {
-        const fileExt = video.match(/(?:\.)(\w+)$/)[0];
+        const fileExt = video.match(/(?:\.)(\w+)$/)[1];
         return {
           src: `http://127.0.0.1:8080/video/${video}`,
           type: `video/${fileExt}`,
@@ -103,17 +104,18 @@ export default new Vuex.Store({
       state[type].unshift(...files);
     },
     setSelected(state, [type, index]) {
-      state[type][index].isSelect = !this.getters.checkItem(type, index)
-        .isSelect;
+      const currentStatus = this.getters.checkItem(type, index).isSelect;
+      state[type][index].isSelect = !currentStatus;
+    },
+    deleteFile(state, [type, index]) {
+      state[type].splice(index, 1);
     },
   },
   actions: {
     getFileNames: async function (context, address) {
-      // this.axios.defaults.baseURL = "http://127.0.0.1:8080";
       try {
         const response = await axios({
           url: `/${address}`,
-          baseURL: "http://127.0.0.1:8080",
         });
         const data = response.data ?? [];
         context.commit("listFiles", [address, data]);
@@ -133,7 +135,6 @@ export default new Vuex.Store({
           method: "post",
           url: "/upload",
           data: formData,
-          baseURL: "http://127.0.0.1:8080",
         });
         const { data } = response;
         data.forEach((file) => {
@@ -151,6 +152,28 @@ export default new Vuex.Store({
         }
       } catch (err) {
         throw new Error("upload fail", err);
+      }
+    },
+    deleteFiles: async function (context, files) {
+      try {
+        const response = await axios({
+          method: "delete",
+          url: "/delete",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: JSON.stringify(files),
+        });
+        const { data } = response;
+        for (const [key, value] of Object.entries(data)) {
+          if (value) {
+            const type = /(?:\.)(png|jpe?g)$/.test(key) ? "images" : "videos";
+            const index = context.getters.checkIndex(type, key);
+            context.commit("deleteFile", [type, index]);
+          }
+        }
+      } catch (err) {
+        throw new Error("deletion fail", err);
       }
     },
   },

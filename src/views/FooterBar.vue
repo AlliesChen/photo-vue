@@ -1,27 +1,17 @@
 <template>
   <footer class="footer sticky">
     <Page-Switch v-if="currentMode === 'browse'" />
-    <div v-if="currentMode === 'selection'" class="flex justify-space-around">
-      <button disabled="true" class="flex">
-        <feather type="external-link" />
-      </button>
-      <p class="text-xl m-0">已選取<span id="selectedCount">0</span>個項目</p>
-      <button disabled="true" class="flex">
-        <feather type="trash-2" />
-      </button>
-    </div>
+    <Selection-Agent v-if="currentMode === 'selection'" />
   </footer>
 </template>
 
 <script>
+import CommonInfo from "../components/mixin/CommonInfo.vue";
 import PageSwitch from "./PageSwitch.vue";
+import SelectionAgent from "./SelectionAgent.vue";
 export default {
-  components: { PageSwitch },
-  computed: {
-    currentMode() {
-      return this.$store.getters.currentMode;
-    },
-  },
+  mixins: [CommonInfo],
+  components: { PageSwitch, SelectionAgent },
 };
 </script>
 
