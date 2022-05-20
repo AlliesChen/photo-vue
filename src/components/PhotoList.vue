@@ -19,14 +19,13 @@
 </template>
 
 <script>
+import CommonInfo from "./mixin/CommonInfo.vue";
 export default {
   name: "PhotoGallery",
+  mixins: [CommonInfo],
   computed: {
     thumbnails() {
       return this.$store.getters.thumbnails;
-    },
-    currentMode() {
-      return this.$store.getters.currentMode;
     },
   },
   methods: {
@@ -54,7 +53,7 @@ ol {
 img {
   width: 100%;
   height: 100%;
-  object-fit: fill;
+  object-fit: cover;
 }
 .mask {
   width: 100%;

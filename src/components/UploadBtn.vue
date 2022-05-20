@@ -7,7 +7,7 @@
       type="file"
       id="fileInput"
       name="fileInput"
-      accept="image/png, image/jpeg"
+      accept="image/png, image/jpeg, video/mp4"
       multiple="multiple"
     />
   </label>

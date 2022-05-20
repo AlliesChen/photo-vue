@@ -65,11 +65,11 @@ export default new Vuex.Store({
     },
     vidThumbnails: (state) => {
       return state.videos.map((video) => {
-        const fileExt = video.match(/(?:\.)(\w+)$/)[1];
+        const fileExt = video.name.match(/(?:\.)(\w+)$/)[1];
         return {
-          src: `http://127.0.0.1:8080/video/${video}`,
+          src: `http://127.0.0.1:8080/video/${video.name}`,
           type: `video/${fileExt}`,
-          name: video,
+          name,
         };
       });
     },
@@ -127,6 +127,7 @@ export default new Vuex.Store({
       const formData = new FormData();
       let images = [];
       let videos = [];
+      const isImage = new RegExp(/(?:.)(png|jpe?g)$/);
       for (let i = 0; i < files.length; i += 1) {
         formData.append("files", files[i]);
       }
@@ -137,8 +138,9 @@ export default new Vuex.Store({
           data: formData,
         });
         const { data } = response;
-        data.forEach((file) => {
-          if (file.match(/(?:\.)(png|jpe?g)$/)) {
+        const { successResults, errorFiles } = data;
+        successResults.forEach((file) => {
+          if (isImage.test(file)) {
             images.push(file);
           } else {
             videos.push(file);
@@ -150,11 +152,15 @@ export default new Vuex.Store({
         if (videos.length > 0) {
           context.commit("listFiles", ["videos", videos]);
         }
+        if (errorFiles.length) {
+          console.log("Upload fails: ", errorFiles);
+        }
       } catch (err) {
-        throw new Error("upload fail", err);
+        throw new Error("Something wrong in the process of uploading", err);
       }
     },
     deleteFiles: async function (context, files) {
+      const isImage = new RegExp(/(?:.)(png|jpe?g)$/);
       try {
         const response = await axios({
           method: "delete",
@@ -167,7 +173,7 @@ export default new Vuex.Store({
         const { data } = response;
         for (const [key, value] of Object.entries(data)) {
           if (value) {
-            const type = /(?:\.)(png|jpe?g)$/.test(key) ? "images" : "videos";
+            const type = isImage.test(key) ? "images" : "videos";
             const index = context.getters.checkIndex(type, key);
             context.commit("deleteFile", [type, index]);
           }
