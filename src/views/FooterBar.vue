@@ -19,6 +19,6 @@ export default {
 .footer {
   bottom: 0;
   height: 4rem;
-  background-color: white;
+  background-color: var(--white);
 }
 </style>

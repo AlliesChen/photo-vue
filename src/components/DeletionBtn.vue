@@ -1,6 +1,6 @@
 <template>
   <button @click="deleteFiles">
-    <feather type="trash-2" />
+    <slot></slot>
   </button>
 </template>
 
@@ -16,7 +16,7 @@ export default {
         []
       );
       this.$store.dispatch("deleteFiles", list).then(() => {
-        this.$store.commit("useMode", "browse");
+        this.$store.commit("useScene", "none");
       });
     },
   },

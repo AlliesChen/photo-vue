@@ -4,18 +4,16 @@
       <feather type="external-link" />
     </button>
     <p class="text-xl m-0">已選取{{ counter }}個項目</p>
-    <Deletion-Btn :disabled="counter === 0" class="flex" />
+    <button :disabled="counter === 0" @click="useScene" class="flex">
+      <feather type="trash-2" />
+    </button>
   </div>
 </template>
 
 <script>
 import CommonInfo from "../components/mixin/CommonInfo.vue";
-import DeletionBtn from "../components/DeletionBtn.vue";
 export default {
   mixins: [CommonInfo],
-  components: {
-    DeletionBtn,
-  },
   computed: {
     counter() {
       return this.baseList.reduce(
@@ -30,6 +28,11 @@ export default {
         this.$store.commit("setSelected", [this.currentPage, index]);
       }
     });
+  },
+  methods: {
+    useScene() {
+      this.$store.commit("useScene", "deletion");
+    },
   },
 };
 </script>

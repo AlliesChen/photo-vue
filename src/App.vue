@@ -27,10 +27,11 @@ export default {
 
 <style lang="scss">
 @use "styles/main";
-@include main.setJustify(center, space-around, flex-start);
+@include main.setJustify(center, space-around, flex-start, flex-end);
 @include main.setItems(center);
 @include main.setRounded();
-@include main.setPosition(absolute, relative, sticky);
+@include main.setPosition(absolute, relative, sticky, fixed);
+@include main.setTop(0);
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap");
 @import url("styles/basics.css");
 

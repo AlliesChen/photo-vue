@@ -1,5 +1,5 @@
 <template>
-  <header class="header sticky justify-center items-center">
+  <header class="header sticky w-full justify-center items-center">
     <h2 class="text-white">{{ this.headerTitle }}</h2>
     <button
       v-for="btn in btns"
@@ -74,7 +74,6 @@ export default {
 .header {
   z-index: 2;
   top: 0;
-  width: 100%;
   height: 4rem;
   display: flex;
   background: linear-gradient(
@@ -87,7 +86,7 @@ export default {
 
 .btn {
   font-size: 1rem;
-  color: white;
+  color: var(--white);
   background-color: gray;
 }
 

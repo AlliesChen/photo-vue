@@ -6,11 +6,14 @@
       @click="setFile(index)"
       class="relative"
     >
-      <video controls>
+      <video controls class="w-full h-full">
         <source :src="item.src" :type="item.type" />
         Your browser does not support the video tag.
       </video>
-      <div v-show="currentMode === 'selection'" class="mask absolute top-0">
+      <div
+        v-show="currentMode === 'selection'"
+        class="mask absolute w-full top-0"
+      >
         <feather
           :type="item.isSelect ? 'check-circle' : 'circle'"
           class="absolute"
@@ -42,8 +45,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@use "../styles/main";
-@include main.setTop(0);
 ol {
   display: flex;
   flex-wrap: wrap;
@@ -54,12 +55,9 @@ ol {
   }
 }
 video {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
 }
 .mask {
-  width: 100%;
   height: calc(100vw / 3);
   // as same as --cyan-dark
   background-color: rgba(22, 78, 99, 0.7);

@@ -23,11 +23,16 @@
 
 /components -- 邏輯元件，會碰到後端的元件  
 |- PhotoList.vue -- 向 store 取相片清單，並做出縮圖  
-|- VideoList.vue -- 向 store 取影片清單  
-|- UploadBtn.vue -- 向 store 進行檔案上傳
+|- VideoList.vue -- 向 store 取影片清單，並做出縮圖  
+|- UploadBtn.vue -- 向 store 進行檔案上傳  
+|- DeletionBtn.vue -- 向 store 要求刪除檔案  
+|- /mixin -- 常用物件與方法元件  
+ |- CommonInfo.vue -- 元件常用物件及方法，如：跟 Vuex 取資料
 
 /store -- 資料管理元件  
-|- index.js -- (vuex)負責 api 資料存取功能管理
+|- index.js -- 載入(vuex)模組  
+|- files.js -- 負責 api 資料存取功能管理  
+|- status.js -- 負責 app 狀態管理
 
 /styles -- css/scss 檔案  
 |- \_list.scss -- OOCSS 元素製造器  
@@ -38,16 +43,6 @@
 |- FilePages.vue -- router-view 的插入點，呈現 PhotoList/VideoList  
 |- FooterBar.vue -- 應用的底部功能列容器  
 |- HeaderBar.vue -- 應用的頂部功能列容器  
-|- PageSwitch.vue -- 切換頁面功能，使用 router-link
-
-## 運作模式
-
-// TODO
-
-deletion page/check
-
-vuex
-
-vue-router
-
-scss
+|- PageSwitch.vue -- 切換頁面功能，使用 router-link  
+|- SelectionAgent -- 在 Mode: seletion 使用的底部列  
+|- DelectionScene -- 在 Scene: deletion 使用的遮罩

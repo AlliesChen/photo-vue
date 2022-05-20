@@ -6,8 +6,11 @@
       @click="setFile(index)"
       class="relative"
     >
-      <img :src="item.src" :alt="item.name" />
-      <div v-show="currentMode === 'selection'" class="mask absolute top-0">
+      <img :src="item.src" :alt="item.name" class="w-full h-full" />
+      <div
+        v-show="currentMode === 'selection'"
+        class="mask absolute w-full top-0"
+      >
         <feather
           :type="item.isSelect ? 'check-circle' : 'circle'"
           class="absolute"
@@ -39,8 +42,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@use "../styles/main";
-@include main.setTop(0);
 ol {
   display: flex;
   flex-wrap: wrap;
@@ -51,12 +52,9 @@ ol {
   }
 }
 img {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
 }
 .mask {
-  width: 100%;
   height: calc(100vw / 3);
   // as same as --cyan-dark
   background-color: rgba(22, 78, 99, 0.7);
