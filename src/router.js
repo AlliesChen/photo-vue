@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import PhotoList from "./components/PhotoList.vue";
 import VideoList from "./components/VideoList.vue";
+import FileScene from "./views/FileScene.vue";
 
 Vue.use(Router);
 
@@ -24,6 +25,10 @@ export default new Router({
     {
       path: "/albums",
       name: "albums",
+    },
+    {
+      path: "/:type/:id",
+      name: FileScene,
     },
   ],
 });

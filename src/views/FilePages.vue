@@ -1,6 +1,8 @@
 <template>
   <main class="main w-full relative">
-    <router-view />
+    <keep-alive :max="1">
+      <router-view />
+    </keep-alive>
     <Deletion-Scene
       v-if="currentScene === 'deletion'"
       class="mask fixed top-0"
@@ -11,6 +13,7 @@
 <script>
 import DeletionScene from "./DeletionScene.vue";
 export default {
+  name: "FilePages",
   components: {
     DeletionScene,
   },
@@ -29,6 +32,5 @@ export default {
 }
 .mask {
   z-index: 2;
-  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>

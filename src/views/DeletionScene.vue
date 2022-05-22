@@ -1,5 +1,7 @@
 <template>
-  <section class="w-full h-full flex-col justify-flex-end items-center">
+  <section
+    class="w-full h-full flex-col justify-flex-end items-center bg__balck--tl"
+  >
     <DelectionBtn class="btn danger rounded-lg"
       >刪除{{ pageType }}</DelectionBtn
     >
@@ -35,6 +37,10 @@ export default {
 </script>
 
 <style scoped>
+/* tl: translucent */
+.bg__black--tl {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .btn {
   background-color: var(--white);
   width: 75%;
