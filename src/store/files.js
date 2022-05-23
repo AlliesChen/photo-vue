@@ -1,6 +1,7 @@
 import axios from "axios";
-axios.defaults.baseURL = "http://127.0.0.1:8080";
-
+const baseURL = "http://127.0.0.1:8080";
+axios.defaults.baseURL = baseURL;
+export { baseURL };
 export default {
   state: {
     // Base on backend api address
@@ -15,27 +16,26 @@ export default {
     checkItem: (state) => (type, index) => state[type][index],
     checkIndex: (state) => (type, name) =>
       state[type].map((item) => item.name).indexOf(name),
-    thumbnails: (state) => {
-      return state.images.map((image) => ({
-        ...image,
-        src: `${axios.defaults.baseURL}/image-xs/${image.name}`,
-      }));
-    },
-    vidThumbnails: (state) => {
-      return state.videos.map((video) => {
-        const fileExt = video.name.match(/(?:\.)(\w+)$/)[1];
+    thumbnails: (state) => (type) => {
+      let source;
+      switch (type) {
+        case "images":
+          source = "image-xs";
+          break;
+        case "videos":
+          source = "video";
+          break;
+        default:
+          source = "album";
+      }
+      return state[type].map((file) => {
+        const fileExt = file.name.match(/(?:\.)(\w+)$/)[1];
         return {
-          src: `${axios.defaults.baseURL}/video/${video.name}`,
-          type: `video/${fileExt}`,
-          name,
+          ...file,
+          src: `${axios.defaults.baseURL}/${source}/${file.name}`,
+          type: `${type.slice(0, -1)}/${fileExt}`,
         };
       });
-    },
-    imageQty: (state) => {
-      return state.images.length;
-    },
-    videoQty: (state) => {
-      return state.videos.length;
     },
   },
   mutations: {

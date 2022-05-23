@@ -4,9 +4,8 @@
       v-for="btn in btns"
       :key="btn.uuid"
       :to="btn.to"
-      @click.native="usePage(btn.to)"
       class="btn flex-col justify-flex-start items-center h-full"
-      :class="[currentPage === btn.to.slice(1) ? 'text-cyan' : 'text-black']"
+      :class="$route.name === btn.to.slice(1) ? 'text-cyan' : 'text-black'"
     >
       <feather :type="btn.icon" />
       <small>{{ btn.text }}</small>
@@ -42,15 +41,6 @@ export default {
         },
       ],
     };
-  },
-  methods: {
-    usePage(query) {
-      const page = query.slice(1);
-      this.$store.commit("usePage", page);
-    },
-  },
-  mounted() {
-    this.$store.commit("usePage", this.$route.name);
   },
 };
 </script>

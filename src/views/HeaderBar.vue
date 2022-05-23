@@ -1,5 +1,5 @@
 <template>
-  <header class="header sticky w-full justify-center items-center">
+  <header class="sticky w-full justify-center items-center">
     <h2 class="text-white">{{ this.headerTitle }}</h2>
     <button
       v-for="btn in btns"
@@ -44,16 +44,13 @@ export default {
   },
   computed: {
     headerTitle() {
-      let counter;
+      const counter = this.baseList.length;
       switch (this.currentPage) {
         case "images":
-          counter = this.$store.getters.imageQty;
           return `${counter}張相片`;
         case "videos":
-          counter = this.$store.getters.videoQty;
           return `${counter}部影片`;
         default:
-          counter = 0;
           return `${counter}個檔案`;
       }
     },
@@ -68,10 +65,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@use "../styles/main";
-@include main.setRight(4, 16);
-
-.header {
+header {
   z-index: 2;
   top: 0;
   height: 4rem;

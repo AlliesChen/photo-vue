@@ -19,10 +19,10 @@
 - [ ] 可建立相簿，建立後可於圖庫中看到縮圖。
 - [x] 預覽圖(縮圖)為原始圖片壓縮過之非透明圖片/影片。
 - [ ] 一個 floating icon 依日期為最小單位顯示該行照片的檔案日期
-- [ ] 可點擊縮圖看原始檔案(圖片支援透明圖層)。
+- [x] 可點擊縮圖看原始檔案(圖片支援透明圖層)。
 - [ ] 原始檔案瀏覽可左右滑動切換上下一張圖片。
 - [ ] 瀏覽狀態下檔案預載前後兩張，左右滑動可見。
-- [ ] 瀏覽狀態下顯示檔案名稱為檔名前 14 碼，yyyy/mm/dd hh:mm:ss
+- [x] 瀏覽狀態下顯示檔案名稱為檔名前 14 碼，yyyy/mm/dd hh:mm:ss
 - [x] 可刪除檔案，刪除後即不見於收藏庫
 - [ ] 單次載入最大 50 張圖片，超過的部分於滑動到最後一張(第 50 張)後繼續載入。
 
@@ -31,11 +31,11 @@
 /src  
 |- main.js -- 建立 Vue 實例  
 |- App.vue -- 這個應用的起始點，管理客製 CSS 元素(色票)，引入 main.scss。  
-|- router.js -- 相片/影片/相簿頁面切換
+|- router.js -- 透過URL控制頁面，如相片/影片/相簿頁面切換
 
 /components -- 邏輯元件，會碰到後端的元件  
-|- PhotoList.vue -- 向 store 取相片清單，並做出縮圖  
-|- VideoList.vue -- 向 store 取影片清單，並做出縮圖  
+|- FileList.vue -- 向 store 取檔案清單，並加入對應的File-Case  
+|- FileCase.vue -- 產生image或video標籤，無source prop的話則連結原始檔案  
 |- UploadBtn.vue -- 向 store 進行檔案上傳  
 |- DeletionBtn.vue -- 向 store 要求刪除檔案  
 |- /mixin -- 常用物件與方法元件  
@@ -56,5 +56,6 @@
 |- FooterBar.vue -- 應用的底部功能列容器  
 |- HeaderBar.vue -- 應用的頂部功能列容器  
 |- PageSwitch.vue -- 切換頁面功能，使用 router-link  
+|- FileScene.vue -- 點擊圖片展開後的頁面  
+|- DelectionScene -- 在 Scene: deletion 使用的遮罩  
 |- SelectionAgent -- 在 Mode: seletion 使用的底部列  
-|- DelectionScene -- 在 Scene: deletion 使用的遮罩

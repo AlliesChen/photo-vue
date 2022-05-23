@@ -32,6 +32,8 @@ export default {
 @include main.setRounded();
 @include main.setPosition(absolute, relative, sticky, fixed);
 @include main.setTop(0);
+@include main.setRight(1, 4, 16);
+@include main.setBottom(1);
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap");
 @import url("styles/basics.css");
 

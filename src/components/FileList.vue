@@ -1,20 +1,17 @@
 <template>
   <ol class="m-0 p-0">
-    <li
-      v-for="(item, index) in thumbnails"
-      :key="item.name"
-      @click="setFile(index)"
-      class="relative"
-    >
-      <img :src="item.src" :alt="item.name" class="w-full h-full" />
+    <li v-for="(item, index) in baseList" :key="item.name" class="relative">
+      <router-link :to="fileRoot + '/' + item.name">
+        <File-Case :source="item.src" :alter="item.name" :type="item.type" />
+      </router-link>
       <div
         v-show="currentMode === 'selection'"
+        @click="setFile(index)"
         class="mask absolute w-full top-0"
       >
         <feather
           :type="item.isSelect ? 'check-circle' : 'circle'"
-          class="absolute"
-          style="bottom: 0.25rem; right: 0.25rem; color: var(--white)"
+          class="absolute right-1 bottom-1 text-white"
         />
       </div>
     </li>
@@ -23,12 +20,16 @@
 
 <script>
 import CommonInfo from "./mixin/CommonInfo.vue";
+import FileCase from "./FileCase.vue";
 export default {
-  name: "PhotoGallery",
+  name: "FileGallery",
   mixins: [CommonInfo],
+  components: {
+    FileCase,
+  },
   computed: {
-    thumbnails() {
-      return this.$store.getters.thumbnails;
+    fileRoot() {
+      return this.$route.name.slice(0, -1);
     },
   },
   methods: {
@@ -58,6 +59,5 @@ img {
   height: calc(100vw / 3);
   // as same as --cyan-dark
   background-color: rgba(22, 78, 99, 0.7);
-  pointer-events: none;
 }
 </style>

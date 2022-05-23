@@ -1,6 +1,6 @@
 <template>
   <section
-    class="w-full h-full flex-col justify-flex-end items-center bg__balck--tl"
+    class="w-full h-full flex-col justify-flex-end items-center bg__black--tl"
   >
     <DelectionBtn class="btn danger rounded-lg"
       >刪除{{ pageType }}</DelectionBtn
@@ -17,8 +17,7 @@ export default {
   },
   computed: {
     pageType() {
-      const currentPage = this.$store.getters.currentPage;
-      switch (currentPage) {
+      switch (this.$route.name) {
         case "images":
           return "照片";
         case "videos":

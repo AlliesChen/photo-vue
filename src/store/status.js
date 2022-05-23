@@ -1,20 +1,6 @@
 // For managing App status
 export default {
   state: {
-    pages: [
-      {
-        name: "images",
-        isCurrent: false,
-      },
-      {
-        name: "videos",
-        isCurrent: false,
-      },
-      {
-        name: "albums",
-        isCurrent: false,
-      },
-    ],
     modes: [
       {
         name: "browse",
@@ -34,12 +20,13 @@ export default {
         name: "deletion",
         isCurrent: false,
       },
+      {
+        name: "showcase",
+        isCurrent: false,
+      },
     ],
   },
   getters: {
-    currentPage: (state) => {
-      return state.pages.find((page) => page.isCurrent === true)?.name;
-    },
     currentMode: (state) => {
       return state.modes.find((mode) => mode.isCurrent === true).name;
     },
@@ -48,15 +35,6 @@ export default {
     },
   },
   mutations: {
-    usePage(state, target) {
-      state.pages.forEach((page) => {
-        if (page.name === target) {
-          page.isCurrent = true;
-        } else {
-          page.isCurrent = false;
-        }
-      });
-    },
     useMode(state, target) {
       state.modes.forEach((mode) => {
         if (mode.name === target) {

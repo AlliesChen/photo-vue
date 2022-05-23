@@ -1,7 +1,7 @@
 <template>
-  <main class="main w-full relative">
+  <main class="w-full relative">
     <keep-alive :max="1">
-      <router-view />
+      <router-view :class="$route.name === 'file' && 'mask fixed top-0'" />
     </keep-alive>
     <Deletion-Scene
       v-if="currentScene === 'deletion'"
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style scoped>
-.main {
+main {
   /* header and footer are both 8 rem height */
   min-height: calc(100vh - 8rem);
 }

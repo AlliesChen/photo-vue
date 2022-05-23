@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer sticky">
+  <footer class="sticky">
     <Page-Switch v-if="currentMode === 'browse'" />
     <Selection-Agent v-if="currentMode === 'selection'" />
   </footer>
@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style scoped>
-.footer {
+footer {
   bottom: 0;
   height: 4rem;
   background-color: var(--white);

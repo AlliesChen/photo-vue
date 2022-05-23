@@ -1,12 +1,12 @@
 import Vue from "vue";
 import Router from "vue-router";
-import PhotoList from "./components/PhotoList.vue";
-import VideoList from "./components/VideoList.vue";
+import FileList from "./components/FileList.vue";
 import FileScene from "./views/FileScene.vue";
 
 Vue.use(Router);
 
 export default new Router({
+  mode: "history",
   routes: [
     {
       path: "/",
@@ -15,12 +15,12 @@ export default new Router({
     {
       path: "/images",
       name: "images",
-      component: PhotoList,
+      component: FileList,
     },
     {
       path: "/videos",
       name: "videos",
-      component: VideoList,
+      component: FileList,
     },
     {
       path: "/albums",
@@ -28,7 +28,8 @@ export default new Router({
     },
     {
       path: "/:type/:id",
-      name: FileScene,
+      name: "file",
+      component: FileScene,
     },
   ],
 });
