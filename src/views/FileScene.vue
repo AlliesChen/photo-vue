@@ -2,8 +2,9 @@
   <article class="w-full h-full flex-col items-center bg__black">
     <header class="text-white flex items-center">
       {{ fileSeq }}
+      <!-- back to images or videos -->
       <router-link
-        :to="'/' + listType"
+        :to="'/' + fileFrom"
         class="absolute right-4 flex items-center text-white"
       >
         <feather type="x" />
@@ -33,25 +34,31 @@ export default {
     return {
       fileSeq: "",
       timestamp: "",
+      fileFrom: "",
     };
   },
   methods: {
     initScene() {
       if (this.currentScene !== "showcase") return;
       const file = this.$route.params.id;
+      const type = this.$route.params.type.concat("s");
       const total = this.baseList.length;
-      const current = this.fileIndex(file) + 1;
+      const current = this.$store.getters.checkIndex(type, file) + 1;
       const timestamp = file.match(
         /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
       );
       this.fileSeq = `${current}/${total}`;
       // yyyy/mm/dd hh:mm:ss
       this.timestamp = `${timestamp[1]}/${timestamp[2]}/${timestamp[3]} ${timestamp[4]}:${timestamp[5]}:${timestamp[6]}`;
+      this.fileFrom = type;
     },
   },
   activated() {
     this.$store.commit("useScene", "showcase");
     this.initScene();
+  },
+  deactivated() {
+    this.$store.commit("useScene", "none");
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <header class="sticky w-full justify-center items-center">
-    <h2 class="text-white">{{ this.headerTitle }}</h2>
+    <h2 class="text-white">{{ headerTitle }}</h2>
     <button
       v-for="btn in btns"
       @click="useMode(btn.to)"

@@ -13,34 +13,20 @@ export default {
     albums: [],
   },
   getters: {
+    checkState: (state) => (type) =>
+      Object.prototype.hasOwnProperty.call(state, type) ? state[type] : [],
     checkItem: (state) => (type, index) => state[type][index],
     checkIndex: (state) => (type, name) =>
       state[type].map((item) => item.name).indexOf(name),
-    thumbnails: (state) => (type) => {
-      let source;
-      switch (type) {
-        case "images":
-          source = "image-xs";
-          break;
-        case "videos":
-          source = "video";
-          break;
-        default:
-          source = "album";
-      }
-      return state[type].map((file) => {
-        const fileExt = file.name.match(/(?:\.)(\w+)$/)[1];
-        return {
-          ...file,
-          src: `${axios.defaults.baseURL}/${source}/${file.name}`,
-          type: `${type.slice(0, -1)}/${fileExt}`,
-        };
-      });
-    },
   },
   mutations: {
     listFiles(state, [type, items]) {
-      const files = items.map((item) => ({ name: item, isSelect: false }));
+      const files = items.map((item) => ({
+        name: item,
+        isSelect: false,
+        // NOTE: image/jpeg, video/mp4 etc.
+        type: `${type.slice(0, -1)}/${item.match(/(?:\.)(\w+)$/)[1]}`,
+      }));
       state[type].unshift(...files);
     },
     setSelected(state, [type, index]) {

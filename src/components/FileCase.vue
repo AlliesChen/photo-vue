@@ -5,8 +5,8 @@
     :alt="alter"
     class="w-full h-full"
   />
-  <video v-else controls class="w-full h-full">
-    <source :src="source" :type="type" />
+  <video v-else :controls="isShowcase" class="w-full h-full">
+    <source :src="source || fileOrigin" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 </template>
@@ -19,13 +19,25 @@ export default {
     source: String,
     alter: String,
   },
+  data() {
+    return {
+      fileType: "",
+      fileOrigin: "",
+    };
+  },
   computed: {
-    fileType() {
-      return this.type.match(/\w+/)[0];
+    isShowcase() {
+      return this.$store.getters.currentScene === "showcase";
     },
-    fileOrigin() {
-      return baseURL + this.$route.path;
+  },
+  methods: {
+    initCase() {
+      this.fileType = this.type.match(/\w+/)[0];
+      this.fileOrigin = baseURL + this.$route.path;
     },
+  },
+  created() {
+    this.initCase();
   },
 };
 </script>

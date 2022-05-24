@@ -2,7 +2,11 @@
   <ol class="m-0 p-0">
     <li v-for="(item, index) in baseList" :key="item.name" class="relative">
       <router-link :to="fileRoot + '/' + item.name">
-        <File-Case :source="item.src" :alter="item.name" :type="item.type" />
+        <File-Case
+          :source="thumbnailRoot + '/' + item.name"
+          :alter="item.name"
+          :type="item.type"
+        />
       </router-link>
       <div
         v-show="currentMode === 'selection'"
@@ -20,6 +24,7 @@
 
 <script>
 import CommonInfo from "./mixin/CommonInfo.vue";
+import { baseURL } from "../store/files";
 import FileCase from "./FileCase.vue";
 export default {
   name: "FileGallery",
@@ -29,7 +34,17 @@ export default {
   },
   computed: {
     fileRoot() {
+      if (this.$route.name === "file") {
+        return this.$route.params.type;
+      }
       return this.$route.name.slice(0, -1);
+    },
+    thumbnailRoot() {
+      if (this.fileRoot === "image") {
+        return `${baseURL}/${this.fileRoot}-xs`;
+      } else {
+        return `${baseURL}/${this.fileRoot}`;
+      }
     },
   },
   methods: {

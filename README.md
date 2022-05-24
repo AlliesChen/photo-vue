@@ -31,11 +31,11 @@
 /src  
 |- main.js -- 建立 Vue 實例  
 |- App.vue -- 這個應用的起始點，管理客製 CSS 元素(色票)，引入 main.scss。  
-|- router.js -- 透過URL控制頁面，如相片/影片/相簿頁面切換
+|- router.js -- 透過 URL 控制頁面，如相片/影片/相簿頁面切換
 
 /components -- 邏輯元件，會碰到後端的元件  
-|- FileList.vue -- 向 store 取檔案清單，並加入對應的File-Case  
-|- FileCase.vue -- 產生image或video標籤，無source prop的話則連結原始檔案  
+|- FileList.vue -- 向 store 取檔案清單，並加入對應的 File-Case  
+|- FileCase.vue -- 產生 image 或 video 標籤，無 source prop 的話則連結原始檔案  
 |- UploadBtn.vue -- 向 store 進行檔案上傳  
 |- DeletionBtn.vue -- 向 store 要求刪除檔案  
 |- /mixin -- 常用物件與方法元件  
@@ -58,4 +58,8 @@
 |- PageSwitch.vue -- 切換頁面功能，使用 router-link  
 |- FileScene.vue -- 點擊圖片展開後的頁面  
 |- DelectionScene -- 在 Scene: deletion 使用的遮罩  
-|- SelectionAgent -- 在 Mode: seletion 使用的底部列  
+|- SelectionAgent -- 在 Mode: seletion 使用的底部列
+
+## Issues
+
+- 起始網址下 (`/`)，CommonList 中的 listType 會是`undefined`，造成 baseList 錯誤，會導致 HeaderBar 無法顯示。
