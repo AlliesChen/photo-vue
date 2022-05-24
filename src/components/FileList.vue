@@ -5,7 +5,7 @@
         <File-Case
           :source="thumbnailRoot + '/' + item.name"
           :alter="item.name"
-          :type="item.type"
+          :type="item.type.match(/\w+/)[0]"
         />
       </router-link>
       <div

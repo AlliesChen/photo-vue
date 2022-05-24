@@ -1,6 +1,6 @@
 <template>
   <img
-    v-if="fileType === 'image'"
+    v-if="type === 'image'"
     :src="source || fileOrigin"
     :alt="alter"
     class="w-full h-full"
@@ -19,25 +19,14 @@ export default {
     source: String,
     alter: String,
   },
-  data() {
-    return {
-      fileType: "",
-      fileOrigin: "",
-    };
-  },
   computed: {
     isShowcase() {
       return this.$store.getters.currentScene === "showcase";
     },
-  },
-  methods: {
-    initCase() {
-      this.fileType = this.type.match(/\w+/)[0];
-      this.fileOrigin = baseURL + this.$route.path;
+    fileOrigin() {
+      console.log("update");
+      return `${baseURL}/${this.type}/${this.alter}`;
     },
-  },
-  created() {
-    this.initCase();
   },
 };
 </script>

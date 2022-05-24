@@ -1,27 +1,38 @@
 <template>
   <article class="w-full h-full flex-col items-center bg__black">
     <header class="text-white flex items-center">
-      {{ fileSeq }}
+      {{ `${currentIndex + 1}/${baseList.length}` }}
       <!-- back to images or videos -->
       <router-link
-        :to="'/' + fileFrom"
+        :to="`/${itemReference}`"
         class="absolute right-4 flex items-center text-white"
       >
         <feather type="x" />
       </router-link>
     </header>
-    <main class="flex justify-center items-center">
+    <main @click="swipeFile" class="flex justify-center items-center">
       <File-Case
-        :type="$route.params.type"
-        :alter="$route.params.id"
-        class="current"
+        v-if="currentIndex > 0"
+        :type="type"
+        :alter="prev.name"
+        :source="`${baseURL}/${type}/${prev.name}`"
+        class="prev"
+      />
+      <File-Case :type="type" :alter="id" :source="source" class="carry" />
+      <File-Case
+        v-if="currentIndex < baseList.length - 1"
+        :type="type"
+        :alter="next.name"
+        :source="`${baseURL}/${type}/${next.name}`"
+        class="next"
       />
     </main>
-    <footer class="text-white flex items-center">{{ timestamp }}</footer>
+    <footer class="text-white flex items-center">{{ displayName }}</footer>
   </article>
 </template>
 
 <script>
+import { baseURL } from "../store/files";
 import CommonInfo from "../components/mixin/CommonInfo.vue";
 import FileCase from "../components/FileCase.vue";
 export default {
@@ -32,30 +43,69 @@ export default {
   },
   data() {
     return {
-      fileSeq: "",
-      timestamp: "",
-      fileFrom: "",
+      type: "",
+      id: "",
+      baseURL,
     };
   },
-  methods: {
-    initScene() {
-      if (this.currentScene !== "showcase") return;
-      const file = this.$route.params.id;
-      const type = this.$route.params.type.concat("s");
-      const total = this.baseList.length;
-      const current = this.$store.getters.checkIndex(type, file) + 1;
-      const timestamp = file.match(
+  computed: {
+    currentIndex() {
+      return this.baseList.map((item) => item.name).indexOf(this.id);
+    },
+    itemReference() {
+      return this.type.concat("s");
+    },
+    displayName() {
+      const timestamp = this.id.match(
         /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
       );
-      this.fileSeq = `${current}/${total}`;
-      // yyyy/mm/dd hh:mm:ss
-      this.timestamp = `${timestamp[1]}/${timestamp[2]}/${timestamp[3]} ${timestamp[4]}:${timestamp[5]}:${timestamp[6]}`;
-      this.fileFrom = type;
+      return `${timestamp[1]}/${timestamp[2]}/${timestamp[3]} ${timestamp[4]}:${timestamp[5]}:${timestamp[6]}`;
+    },
+    prev() {
+      return {
+        ...this.$store.getters.checkItem(
+          this.itemReference,
+          this.currentIndex - 1
+        ),
+      };
+    },
+    next() {
+      return {
+        ...this.$store.getters.checkItem(
+          this.itemReference,
+          this.currentIndex + 1
+        ),
+      };
     },
   },
+  methods: {
+    swipeFile() {
+      console.log("swipe!");
+      this.$router.push(`/${this.type}/${this.next.name}`);
+    },
+  },
+  watch: {
+    $route(newPath, oldPath) {
+      if (newPath.params.length) {
+        this.type = newPath.params.type;
+        this.id = newPath.params.id;
+      } else {
+        this.type = oldPath.params.type;
+        this.id = oldPath.params.id;
+      }
+    },
+  },
+  created() {
+    // TODO: del
+    console.log("FileScene created");
+    this.type = this.$route.params.type;
+    this.id = this.$route.params.id;
+    this.source = `${baseURL}/${this.type}/${this.id}`;
+  },
   activated() {
+    // TODO: del
+    console.log("FileScene activated");
     this.$store.commit("useScene", "showcase");
-    this.initScene();
   },
   deactivated() {
     this.$store.commit("useScene", "none");
@@ -71,7 +121,7 @@ footer {
 main {
   /* header and footer are both 8 rem height */
   min-height: calc(100vh - 8rem);
-  & .current {
+  & .carry {
     width: min(90%, 90vh);
     height: min(90%, 90vw);
   }

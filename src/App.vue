@@ -18,7 +18,7 @@ export default {
     FilePages,
     FooterBar,
   },
-  mounted() {
+  created() {
     this.$store.dispatch("getFileNames", "images");
     this.$store.dispatch("getFileNames", "videos");
   },
