@@ -61,5 +61,3 @@
 |- SelectionAgent -- 在 Mode: seletion 使用的底部列
 
 ## Issues
-
-- 起始網址下 (`/`)，CommonList 中的 listType 會是`undefined`，造成 baseList 錯誤，會導致 HeaderBar 無法顯示。

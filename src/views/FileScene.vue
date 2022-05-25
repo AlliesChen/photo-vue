@@ -10,7 +10,7 @@
         <feather type="x" />
       </router-link>
     </header>
-    <main @click="swipeFile" class="flex justify-center items-center">
+    <main @click="swipeFile" class="grid__col--3">
       <File-Case
         v-if="currentIndex > 0"
         :type="type"
@@ -45,6 +45,7 @@ export default {
     return {
       type: "",
       id: "",
+      source: "",
       baseURL,
     };
   },
@@ -80,31 +81,29 @@ export default {
   },
   methods: {
     swipeFile() {
+      // TODO: del
       console.log("swipe!");
       this.$router.push(`/${this.type}/${this.next.name}`);
     },
   },
   watch: {
     $route(newPath, oldPath) {
-      if (newPath.params.length) {
+      if (Object.keys(newPath.params).length) {
         this.type = newPath.params.type;
         this.id = newPath.params.id;
       } else {
         this.type = oldPath.params.type;
         this.id = oldPath.params.id;
       }
+      this.source = `${baseURL}/${this.type}/${this.id}`;
     },
   },
   created() {
-    // TODO: del
-    console.log("FileScene created");
     this.type = this.$route.params.type;
     this.id = this.$route.params.id;
     this.source = `${baseURL}/${this.type}/${this.id}`;
   },
   activated() {
-    // TODO: del
-    console.log("FileScene activated");
     this.$store.commit("useScene", "showcase");
   },
   deactivated() {
@@ -122,8 +121,7 @@ main {
   /* header and footer are both 8 rem height */
   min-height: calc(100vh - 8rem);
   & .carry {
-    width: min(90%, 90vh);
-    height: min(90%, 90vw);
+    grid-column-start: 2;
   }
 }
 .bg__black {
@@ -131,5 +129,12 @@ main {
 }
 .mask {
   z-index: 2;
+}
+.grid__col--3 {
+  display: grid;
+  grid-template: 100% / repeat(3, 90vw);
+  column-gap: 5vw;
+  justify-items: center;
+  align-items: center;
 }
 </style>

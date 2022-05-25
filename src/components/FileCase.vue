@@ -1,18 +1,12 @@
 <template>
-  <img
-    v-if="type === 'image'"
-    :src="source || fileOrigin"
-    :alt="alter"
-    class="w-full h-full"
-  />
-  <video v-else :controls="isShowcase" class="w-full h-full">
-    <source :src="source || fileOrigin" type="video/mp4" />
+  <img v-if="type === 'image'" :src="source" :alt="alter" class="content" />
+  <video v-else :controls="isShowcase" class="content">
+    <source :src="source" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 </template>
 
 <script>
-import { baseURL } from "../store/files";
 export default {
   props: {
     type: String,
@@ -23,12 +17,13 @@ export default {
     isShowcase() {
       return this.$store.getters.currentScene === "showcase";
     },
-    fileOrigin() {
-      console.log("update");
-      return `${baseURL}/${this.type}/${this.alter}`;
-    },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.content {
+  width: min(100%, 100vh);
+  height: min(100%, 100vw);
+}
+</style>
