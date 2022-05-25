@@ -23,7 +23,8 @@ export default {
 
 <style scoped>
 .content {
-  width: min(100%, 100vh);
-  height: min(100%, 100vw);
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
 }
 </style>

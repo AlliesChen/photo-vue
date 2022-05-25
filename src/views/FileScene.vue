@@ -4,13 +4,18 @@
       {{ `${currentIndex + 1}/${baseList.length}` }}
       <!-- back to images or videos -->
       <router-link
-        :to="`/${itemReference}`"
+        :to="`/${typeRef}`"
         class="absolute right-4 flex items-center text-white"
       >
         <feather type="x" />
       </router-link>
     </header>
-    <main @click="swipeFile" class="grid__col--3">
+    <main
+      @touchmove="moveTouch"
+      @touchend="endTouch"
+      :style="style"
+      class="grid__col--3"
+    >
       <File-Case
         v-if="currentIndex > 0"
         :type="type"
@@ -27,7 +32,7 @@
         class="next"
       />
     </main>
-    <footer class="text-white flex items-center">{{ displayName }}</footer>
+    <footer class="text-white flex items-center">{{ timestamp }}</footer>
   </article>
 </template>
 
@@ -46,6 +51,8 @@ export default {
       type: "",
       id: "",
       source: "",
+      touchStartX: "",
+      touchMoveX: "",
       baseURL,
     };
   },
@@ -53,37 +60,59 @@ export default {
     currentIndex() {
       return this.baseList.map((item) => item.name).indexOf(this.id);
     },
-    itemReference() {
+    typeRef() {
       return this.type.concat("s");
     },
-    displayName() {
-      const timestamp = this.id.match(
+    timestamp() {
+      const timeFormat = this.id.match(
         /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
       );
-      return `${timestamp[1]}/${timestamp[2]}/${timestamp[3]} ${timestamp[4]}:${timestamp[5]}:${timestamp[6]}`;
+      return `${timeFormat[1]}/${timeFormat[2]}/${timeFormat[3]} ${timeFormat[4]}:${timeFormat[5]}:${timeFormat[6]}`;
     },
     prev() {
       return {
-        ...this.$store.getters.checkItem(
-          this.itemReference,
-          this.currentIndex - 1
-        ),
+        ...this.$store.getters.checkItem(this.typeRef, this.currentIndex - 1),
       };
     },
     next() {
       return {
-        ...this.$store.getters.checkItem(
-          this.itemReference,
-          this.currentIndex + 1
-        ),
+        ...this.$store.getters.checkItem(this.typeRef, this.currentIndex + 1),
+      };
+    },
+    style() {
+      return {
+        transform: `translate(${this.touchMoveX}%)`,
       };
     },
   },
   methods: {
-    swipeFile() {
-      // TODO: del
-      console.log("swipe!");
-      this.$router.push(`/${this.type}/${this.next.name}`);
+    moveTouch(e) {
+      if (!this.touchStartX) {
+        this.touchStartX = e.targetTouches[0].clientX;
+      } else {
+        // NOTE: it's a decimal number
+        const sreenMoveRatio =
+          (this.touchStartX - e.targetTouches[0].clientX) / e.view.outerWidth;
+        // NOTE: make sreenMoveRatio to percentage
+        // NOTE: negtive makes the swipe direction intuitively
+        // NOTE: slow down the speed in swiping by using a half of 100 instead
+        const moveAdjust = -50;
+        this.touchMoveX = sreenMoveRatio * moveAdjust;
+      }
+    },
+    endTouch() {
+      // 15 is base on my personal use experience
+      if (
+        this.touchMoveX < -15 &&
+        this.currentIndex < this.baseList.length - 1
+      ) {
+        this.$router.push(`/${this.type}/${this.next.name}`);
+      }
+      if (this.touchMoveX > 15 && this.currentIndex > 0) {
+        this.$router.push(`/${this.type}/${this.prev.name}`);
+      }
+      this.touchStartX = 0;
+      this.touchMoveX = 0;
     },
   },
   watch: {
