@@ -4,8 +4,8 @@
       <router-link :to="fileRoot + '/' + item.name">
         <File-Case
           :source="thumbnailRoot + '/' + item.name"
-          :alter="item.name"
-          :type="item.type.match(/\w+/)[0]"
+          :fileName="item.name"
+          :fileType="item.type"
         />
       </router-link>
       <div

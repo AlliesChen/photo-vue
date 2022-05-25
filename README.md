@@ -59,5 +59,3 @@
 |- FileScene.vue -- 點擊圖片展開後的頁面  
 |- DelectionScene -- 在 Scene: deletion 使用的遮罩  
 |- SelectionAgent -- 在 Mode: seletion 使用的底部列
-
-## Issues

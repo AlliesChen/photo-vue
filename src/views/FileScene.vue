@@ -1,10 +1,10 @@
 <template>
-  <article class="w-full h-full flex-col items-center bg__black">
+  <article class="w-full h-full flex-col items-center bg--black">
     <header class="text-white flex items-center">
       {{ `${currentIndex + 1}/${baseList.length}` }}
       <!-- back to images or videos -->
       <router-link
-        :to="`/${typeRef}`"
+        :to="`/${routeType}s`"
         class="absolute right-4 flex items-center text-white"
       >
         <feather type="x" />
@@ -18,17 +18,22 @@
     >
       <File-Case
         v-if="currentIndex > 0"
-        :type="type"
-        :alter="prev.name"
-        :source="`${baseURL}/${type}/${prev.name}`"
+        :fileType="prev.type"
+        :fileName="prev.name"
+        :source="`${baseURL}/${prev.type.match(/\w+/)[0]}/${prev.name}`"
         class="prev"
       />
-      <File-Case :type="type" :alter="id" :source="source" class="carry" />
+      <File-Case
+        :fileType="fileType"
+        :fileName="routeId"
+        :source="source"
+        class="carry"
+      />
       <File-Case
         v-if="currentIndex < baseList.length - 1"
-        :type="type"
-        :alter="next.name"
-        :source="`${baseURL}/${type}/${next.name}`"
+        :fileType="next.type"
+        :fileName="next.name"
+        :source="`${baseURL}/${next.type.match(/\w+/)[0]}/${next.name}`"
         class="next"
       />
     </main>
@@ -48,8 +53,8 @@ export default {
   },
   data() {
     return {
-      type: "",
-      id: "",
+      routeType: "",
+      routeId: "",
       source: "",
       touchStartX: "",
       touchMoveX: "",
@@ -58,25 +63,26 @@ export default {
   },
   computed: {
     currentIndex() {
-      return this.baseList.map((item) => item.name).indexOf(this.id);
+      return this.baseList.map((item) => item.name).indexOf(this.routeId);
     },
-    typeRef() {
-      return this.type.concat("s");
+    fileType() {
+      // Match and select the file extension (separate by the dot)
+      return `${this.routeType}/${this.routeId.match(/\w+/g)[1]}`;
     },
     timestamp() {
-      const timeFormat = this.id.match(
+      const timeFormat = this.routeId.match(
         /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
       );
       return `${timeFormat[1]}/${timeFormat[2]}/${timeFormat[3]} ${timeFormat[4]}:${timeFormat[5]}:${timeFormat[6]}`;
     },
     prev() {
       return {
-        ...this.$store.getters.checkItem(this.typeRef, this.currentIndex - 1),
+        ...this.baseList[this.currentIndex - 1],
       };
     },
     next() {
       return {
-        ...this.$store.getters.checkItem(this.typeRef, this.currentIndex + 1),
+        ...this.baseList[this.currentIndex + 1],
       };
     },
     style() {
@@ -90,26 +96,29 @@ export default {
       if (!this.touchStartX) {
         this.touchStartX = e.targetTouches[0].clientX;
       } else {
-        // NOTE: it's a decimal number
         const sreenMoveRatio =
-          (this.touchStartX - e.targetTouches[0].clientX) / e.view.outerWidth;
-        // NOTE: make sreenMoveRatio to percentage
-        // NOTE: negtive makes the swipe direction intuitively
-        // NOTE: slow down the speed in swiping by using a half of 100 instead
-        const moveAdjust = -50;
-        this.touchMoveX = sreenMoveRatio * moveAdjust;
+          ((e.targetTouches[0].clientX - this.touchStartX) /
+            e.view.outerWidth) *
+          100;
+        // NOTE: slow down the translate(move) speed
+        const moveSpeedAdjust = 0.5;
+        this.touchMoveX = sreenMoveRatio * moveSpeedAdjust;
       }
     },
     endTouch() {
-      // 15 is base on my personal use experience
+      // NOTE: 15 is base on my personal use experience
       if (
         this.touchMoveX < -15 &&
         this.currentIndex < this.baseList.length - 1
       ) {
-        this.$router.push(`/${this.type}/${this.next.name}`);
+        this.$router.push(
+          `/${this.next.type.match(/\w+/)[0]}/${this.next.name}`
+        );
       }
       if (this.touchMoveX > 15 && this.currentIndex > 0) {
-        this.$router.push(`/${this.type}/${this.prev.name}`);
+        this.$router.push(
+          `/${this.prev.type.match(/\w+/)[0]}/${this.prev.name}`
+        );
       }
       this.touchStartX = 0;
       this.touchMoveX = 0;
@@ -118,19 +127,19 @@ export default {
   watch: {
     $route(newPath, oldPath) {
       if (Object.keys(newPath.params).length) {
-        this.type = newPath.params.type;
-        this.id = newPath.params.id;
+        this.routeType = newPath.params.type;
+        this.routeId = newPath.params.id;
       } else {
-        this.type = oldPath.params.type;
-        this.id = oldPath.params.id;
+        this.routeType = oldPath.params.type;
+        this.routeId = oldPath.params.id;
       }
-      this.source = `${baseURL}/${this.type}/${this.id}`;
+      this.source = `${baseURL}/${this.routeType}/${this.routeId}`;
     },
   },
   created() {
-    this.type = this.$route.params.type;
-    this.id = this.$route.params.id;
-    this.source = `${baseURL}/${this.type}/${this.id}`;
+    this.routeType = this.$route.params.type;
+    this.routeId = this.$route.params.id;
+    this.source = `${baseURL}/${this.routeType}/${this.routeId}`;
   },
   activated() {
     this.$store.commit("useScene", "showcase");
@@ -153,7 +162,7 @@ main {
     grid-column-start: 2;
   }
 }
-.bg__black {
+.bg--black {
   background-color: var(--black);
 }
 .mask {

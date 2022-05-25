@@ -1,7 +1,12 @@
 <template>
-  <img v-if="type === 'image'" :src="source" :alt="alter" class="content" />
+  <img
+    v-if="fileType.includes('image')"
+    :src="source"
+    :alt="fileName"
+    class="content"
+  />
   <video v-else :controls="isShowcase" class="content">
-    <source :src="source" type="video/mp4" />
+    <source :src="source" :type="fileType" />
     Your browser does not support the video tag.
   </video>
 </template>
@@ -9,9 +14,18 @@
 <script>
 export default {
   props: {
-    type: String,
-    source: String,
-    alter: String,
+    fileType: {
+      required: true,
+      type: String,
+    },
+    source: {
+      required: true,
+      type: String,
+    },
+    fileName: {
+      required: true,
+      type: String,
+    },
   },
   computed: {
     isShowcase() {
