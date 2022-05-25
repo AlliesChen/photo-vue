@@ -5,8 +5,8 @@
     :alt="fileName"
     class="content"
   />
-  <video v-else :controls="isShowcase" class="content">
-    <source :src="source" :type="fileType" />
+  <video v-else :controls="isShowcase" :src="source" class="content">
+    <source :type="fileType" />
     Your browser does not support the video tag.
   </video>
 </template>
