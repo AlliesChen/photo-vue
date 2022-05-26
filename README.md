@@ -33,7 +33,7 @@
 
 /src  
 |- main.js -- 建立 Vue 實例  
-|- App.vue -- 這個應用的起始點，管理客製 CSS 元素(色票)，引入 main.scss。  
+|- App.vue -- 這個應用的起始點，使用 Provider 提供 Vuex 的 getter，管理客製 CSS 元素(色票)，引入 main.scss。  
 |- router.js -- 透過 URL 控制頁面，如相片/影片/相簿頁面切換
 
 /components -- 邏輯元件，會碰到後端的元件  

@@ -63,23 +63,20 @@ export default {
       return `${timestamp[1]}/${timestamp[2]}/${timestamp[3]}`;
     },
     showDate(currentIdx) {
-      if (currentIdx === 0 || currentIdx === this.baseList().length - 1)
-        return false;
-      const next = parseInt(currentIdx, 10) - 1;
-      const prev = parseInt(currentIdx, 10) + 1;
+      // not the first and not the first of the row
+      if (currentIdx === 0 || currentIdx % 3 !== 0) return false;
+      // the next row's first item index
+      const last = parseInt(currentIdx, 10) - 3;
+      // not an item undefined in the list
+      if (last >= this.baseList().length) return false;
       const currentDate = this.getDate(this.baseList()[currentIdx].name)
         .split("/")
         .join();
-      const nextDate = this.getDate(this.baseList()[next].name)
+      const futureDate = this.getDate(this.baseList()[last].name)
         .split("/")
         .join();
-      const prevDate = this.getDate(this.baseList()[prev].name)
-        .split("/")
-        .join();
-      return (
-        (currentDate !== nextDate || currentDate !== prevDate) &&
-        currentIdx % 3 === 0
-      );
+      // is from different dates
+      return currentDate !== futureDate;
     },
   },
 };
