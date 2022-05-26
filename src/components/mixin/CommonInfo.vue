@@ -8,13 +8,13 @@ export default {
       return this.$store.getters.currentScene;
     },
     baseList() {
+      let stateName;
       if (this.$route.name === "file") {
-        return this.$store.getters.checkState(
-          this.$route.params.type.concat("s")
-        );
+        stateName = this.$route.params.type.concat("s");
       } else {
-        return this.$store.getters.checkState(this.$route.name);
+        stateName = this.$route.name;
       }
+      return this.$store.getters.checkState(stateName);
     },
   },
 };

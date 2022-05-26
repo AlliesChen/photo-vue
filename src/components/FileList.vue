@@ -9,6 +9,12 @@
         />
       </router-link>
       <div
+        v-if="showDate(index)"
+        class="_icon absolute flex justify-center items-center"
+      >
+        {{ getDate(item.name) }}
+      </div>
+      <div
         v-show="currentMode === 'selection'"
         @click="setFile(index)"
         class="mask absolute w-full top-0"
@@ -53,11 +59,32 @@ export default {
         this.$store.commit("setSelected", ["images", index]);
       }
     },
+    getDate(fileName) {
+      const timestamp = fileName.match(/(\d{4})(\d{2})(\d{2})/);
+      return `${timestamp[1]}/${timestamp[2]}/${timestamp[3]}`;
+    },
+    showDate(currentIdx) {
+      if (currentIdx === 0 || currentIdx === this.baseList.length - 1)
+        return false;
+      const next = parseInt(currentIdx, 10) - 1;
+      const prev = parseInt(currentIdx, 10) + 1;
+      const currentDate = this.getDate(this.baseList[currentIdx].name)
+        .split("/")
+        .join();
+      const nextDate = this.getDate(this.baseList[next].name).split("/").join();
+      const prevDate = this.getDate(this.baseList[prev].name).split("/").join();
+      return (
+        (currentDate !== nextDate || currentDate !== prevDate) &&
+        currentIdx % 3 === 0
+      );
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
+// the color is as same as var(--cyan-dark)
+$mask-cyan: rgba(22, 78, 99, 0.7);
 ol {
   display: flex;
   flex-wrap: wrap;
@@ -72,7 +99,16 @@ img {
 }
 .mask {
   height: calc(100vw / 3);
-  // as same as --cyan-dark
-  background-color: rgba(22, 78, 99, 0.7);
+  background-color: $mask-cyan;
+}
+._icon {
+  width: 40%;
+  height: 15%;
+  top: -0.5rem;
+  left: 0.5rem;
+  background-color: $mask-cyan;
+  color: var(--cyan-light);
+  border-radius: 2vw;
+  font-size: 2vw;
 }
 </style>

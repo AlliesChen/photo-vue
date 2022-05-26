@@ -3,9 +3,22 @@
     v-if="fileType.includes('image')"
     :src="source"
     :alt="fileName"
-    class="content"
+    :class="[
+      isShowcase ? 'object--contain' : 'object--cover',
+      'h-full',
+      'w-full',
+    ]"
   />
-  <video v-else :controls="isShowcase" :src="source" class="content">
+  <video
+    v-else
+    :controls="isShowcase"
+    :src="source"
+    :class="[
+      isShowcase ? 'object--contain' : 'object--cover',
+      'h-full',
+      'w-full',
+    ]"
+  >
     <source :type="fileType" />
     Your browser does not support the video tag.
   </video>
@@ -36,9 +49,10 @@ export default {
 </script>
 
 <style scoped>
-.content {
-  width: 100%;
-  height: 100%;
-  object-fit: scale-down;
+.object--contain {
+  object-fit: contain;
+}
+.object--cover {
+  object-fit: cover;
 }
 </style>

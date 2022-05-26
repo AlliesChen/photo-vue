@@ -1,7 +1,7 @@
 <template>
   <article class="w-full h-full flex-col items-center bg--black">
     <header class="text-white flex items-center">
-      {{ `${currentIndex + 1}/${baseList.length}` }}
+      {{ `${baseList.length - currentIndex}/${baseList.length}` }}
       <!-- back to images or videos -->
       <router-link
         :to="`/${routeType}s`"
