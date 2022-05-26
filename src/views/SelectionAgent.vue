@@ -11,21 +11,20 @@
 </template>
 
 <script>
-import CommonInfo from "../components/mixin/CommonInfo.vue";
 export default {
-  mixins: [CommonInfo],
+  inject: ["baseList"],
   computed: {
     counter() {
-      return this.baseList.reduce(
+      return this.baseList().reduce(
         (prev, current) => prev + (current.isSelect ? 1 : 0),
         0
       );
     },
   },
   destroyed() {
-    this.baseList.forEach((item, index) => {
+    this.baseList().forEach((item, index) => {
       if (item.isSelect) {
-        this.$store.commit("setSelected", [this.currentPage, index]);
+        this.$store.commit("setSelected", [this.$route.name, index]);
       }
     });
   },

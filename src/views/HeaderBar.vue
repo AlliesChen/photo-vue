@@ -6,7 +6,7 @@
       @click="useMode(btn.to)"
       :key="btn.uuid"
       :class="
-        currentMode === btn.mode
+        currentMode() === btn.mode
           ? 'btn absolute rectangle rounded right-16'
           : 'none'
       "
@@ -18,11 +18,9 @@
 </template>
 
 <script>
-import CommonInfo from "../components/mixin/CommonInfo.vue";
 import UploadBtn from "../components/UploadBtn.vue";
 export default {
   name: "HeaderBar",
-  mixins: [CommonInfo],
   components: { UploadBtn },
   data() {
     return Object.freeze({
@@ -42,10 +40,11 @@ export default {
       ],
     });
   },
+  inject: ["currentMode", "baseList"],
   computed: {
     headerTitle() {
-      const counter = this.baseList.length;
-      switch (this.currentPage) {
+      const counter = this.baseList().length;
+      switch (this.$route.name) {
         case "images":
           return `${counter}張相片`;
         case "videos":

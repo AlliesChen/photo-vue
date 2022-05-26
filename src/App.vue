@@ -18,6 +18,21 @@ export default {
     FilePages,
     FooterBar,
   },
+  provide() {
+    return {
+      currentMode: () => this.$store.getters.currentMode,
+      currentScene: () => this.$store.getters.currentScene,
+      baseList: () => {
+        let stateName;
+        if (this.$route.name === "file") {
+          stateName = this.$route.params.type.concat("s");
+        } else {
+          stateName = this.$route.name;
+        }
+        return this.$store.getters.checkState(stateName);
+      },
+    };
+  },
   created() {
     this.$store.dispatch("getFileNames", "images");
     this.$store.dispatch("getFileNames", "videos");

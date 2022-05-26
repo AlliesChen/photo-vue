@@ -26,6 +26,8 @@
 - [x] 瀏覽狀態下顯示檔案名稱為檔名前 14 碼，yyyy/mm/dd hh:mm:ss
 - [x] 可刪除檔案，刪除後即不見於收藏庫
 - [ ] 單次載入最大 50 張圖片，超過的部分於滑動到最後一張(第 50 張)後繼續載入。
+- [ ] 使用者操作結果以提示框顯示在右下角
+- [ ] 可篩選年/月/日顯示檔案
 
 ## 檔案說明
 
@@ -39,8 +41,7 @@
 |- FileCase.vue -- 產生 image 或 video 標籤，無 source prop 的話則連結原始檔案  
 |- UploadBtn.vue -- 向 store 進行檔案上傳  
 |- DeletionBtn.vue -- 向 store 要求刪除檔案  
-|- /mixin -- 常用物件與方法元件  
- |- CommonInfo.vue -- 元件常用物件及方法，如：跟 Vuex 取資料
+|- /mixin -- 常用物件與方法元件
 
 /store -- 資料管理元件  
 |- index.js -- 載入(vuex)模組  

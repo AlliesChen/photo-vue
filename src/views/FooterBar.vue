@@ -1,17 +1,16 @@
 <template>
   <footer class="sticky">
-    <Page-Switch v-if="currentMode === 'browse'" />
-    <Selection-Agent v-if="currentMode === 'selection'" />
+    <Page-Switch v-if="currentMode() === 'browse'" />
+    <Selection-Agent v-if="currentMode() === 'selection'" />
   </footer>
 </template>
 
 <script>
-import CommonInfo from "../components/mixin/CommonInfo.vue";
 import PageSwitch from "./PageSwitch.vue";
 import SelectionAgent from "./SelectionAgent.vue";
 export default {
-  mixins: [CommonInfo],
   components: { PageSwitch, SelectionAgent },
+  inject: ["currentMode"],
 };
 </script>
 

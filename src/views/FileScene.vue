@@ -1,7 +1,7 @@
 <template>
   <article class="w-full h-full flex-col items-center bg--black">
     <header class="text-white flex items-center">
-      {{ `${baseList.length - currentIndex}/${baseList.length}` }}
+      {{ `${baseList().length - currentIndex}/${baseList().length}` }}
       <!-- back to images or videos -->
       <router-link
         :to="`/${routeType}s`"
@@ -30,7 +30,7 @@
         class="carry"
       />
       <File-Case
-        v-if="currentIndex < baseList.length - 1"
+        v-if="currentIndex < baseList().length - 1"
         :fileType="next.type"
         :fileName="next.name"
         :source="`${baseURL}/${next.type.match(/\w+/)[0]}/${next.name}`"
@@ -43,11 +43,9 @@
 
 <script>
 import { baseURL } from "../store/files";
-import CommonInfo from "../components/mixin/CommonInfo.vue";
 import FileCase from "../components/FileCase.vue";
 export default {
   name: "FileScene",
-  mixins: [CommonInfo],
   components: {
     FileCase,
   },
@@ -61,9 +59,12 @@ export default {
       baseURL,
     };
   },
+  inject: ["baseList"],
   computed: {
     currentIndex() {
-      return this.baseList.map((item) => item.name).indexOf(this.routeId);
+      return this.baseList()
+        .map((item) => item.name)
+        .indexOf(this.routeId);
     },
     fileType() {
       // Match and select the file extension (separate by the dot)
@@ -77,12 +78,12 @@ export default {
     },
     prev() {
       return {
-        ...this.baseList[this.currentIndex - 1],
+        ...this.baseList()[this.currentIndex - 1],
       };
     },
     next() {
       return {
-        ...this.baseList[this.currentIndex + 1],
+        ...this.baseList()[this.currentIndex + 1],
       };
     },
     style() {
@@ -109,7 +110,7 @@ export default {
       // NOTE: 15 is base on my personal use experience
       if (
         this.touchMoveX < -15 &&
-        this.currentIndex < this.baseList.length - 1
+        this.currentIndex < this.baseList().length - 1
       ) {
         this.$router.push(
           `/${this.next.type.match(/\w+/)[0]}/${this.next.name}`

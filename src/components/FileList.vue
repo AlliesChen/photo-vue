@@ -1,6 +1,6 @@
 <template>
   <ol class="m-0 p-0">
-    <li v-for="(item, index) in baseList" :key="item.name" class="relative">
+    <li v-for="(item, index) in baseList()" :key="item.name" class="relative">
       <router-link :to="fileRoot + '/' + item.name">
         <File-Case
           :source="thumbnailRoot + '/' + item.name"
@@ -15,7 +15,7 @@
         {{ getDate(item.name) }}
       </div>
       <div
-        v-show="currentMode === 'selection'"
+        v-show="currentMode() === 'selection'"
         @click="setFile(index)"
         class="mask absolute w-full top-0"
       >
@@ -29,15 +29,14 @@
 </template>
 
 <script>
-import CommonInfo from "./mixin/CommonInfo.vue";
 import { baseURL } from "../store/files";
 import FileCase from "./FileCase.vue";
 export default {
   name: "FileGallery",
-  mixins: [CommonInfo],
   components: {
     FileCase,
   },
+  inject: ["baseList", "currentMode"],
   computed: {
     fileRoot() {
       if (this.$route.name === "file") {
@@ -55,7 +54,7 @@ export default {
   },
   methods: {
     setFile(index) {
-      if (this.currentMode === "selection") {
+      if (this.currentMode() === "selection") {
         this.$store.commit("setSelected", ["images", index]);
       }
     },
@@ -64,15 +63,19 @@ export default {
       return `${timestamp[1]}/${timestamp[2]}/${timestamp[3]}`;
     },
     showDate(currentIdx) {
-      if (currentIdx === 0 || currentIdx === this.baseList.length - 1)
+      if (currentIdx === 0 || currentIdx === this.baseList().length - 1)
         return false;
       const next = parseInt(currentIdx, 10) - 1;
       const prev = parseInt(currentIdx, 10) + 1;
-      const currentDate = this.getDate(this.baseList[currentIdx].name)
+      const currentDate = this.getDate(this.baseList()[currentIdx].name)
         .split("/")
         .join();
-      const nextDate = this.getDate(this.baseList[next].name).split("/").join();
-      const prevDate = this.getDate(this.baseList[prev].name).split("/").join();
+      const nextDate = this.getDate(this.baseList()[next].name)
+        .split("/")
+        .join();
+      const prevDate = this.getDate(this.baseList()[prev].name)
+        .split("/")
+        .join();
       return (
         (currentDate !== nextDate || currentDate !== prevDate) &&
         currentIdx % 3 === 0

@@ -4,7 +4,7 @@
       <router-view :class="$route.name === 'file' && 'mask fixed top-0'" />
     </keep-alive>
     <Deletion-Scene
-      v-if="currentScene === 'deletion'"
+      v-if="currentScene() === 'deletion'"
       class="mask fixed top-0"
     />
   </main>
@@ -17,11 +17,7 @@ export default {
   components: {
     DeletionScene,
   },
-  computed: {
-    currentScene() {
-      return this.$store.getters.currentScene;
-    },
-  },
+  inject: ["currentScene"],
 };
 </script>
 

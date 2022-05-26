@@ -5,12 +5,11 @@
 </template>
 
 <script>
-import CommonInfo from "../components/mixin/CommonInfo.vue";
 export default {
-  mixins: [CommonInfo],
+  inject: ["baseList"],
   methods: {
     deleteFiles() {
-      const list = this.baseList.reduce(
+      const list = this.baseList().reduce(
         (prev, current) =>
           current.isSelect ? prev.concat(current.name) : prev,
         []

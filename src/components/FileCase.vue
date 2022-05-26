@@ -40,9 +40,10 @@ export default {
       type: String,
     },
   },
+  inject: ["currentScene"],
   computed: {
     isShowcase() {
-      return this.$store.getters.currentScene === "showcase";
+      return this.currentScene() === "showcase";
     },
   },
 };
