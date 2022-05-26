@@ -6,6 +6,8 @@
           :source="thumbnailRoot + '/' + item.name"
           :fileName="item.name"
           :fileType="item.type"
+          :observer="observer"
+          :lastItem="lastItem"
         />
       </router-link>
       <div
@@ -36,6 +38,13 @@ export default {
   components: {
     FileCase,
   },
+  data() {
+    return {
+      listStart: 0,
+      listStop: 0,
+      observer: null,
+    };
+  },
   inject: ["baseList", "currentMode"],
   computed: {
     fileRoot() {
@@ -50,6 +59,11 @@ export default {
       } else {
         return `${baseURL}/${this.fileRoot}`;
       }
+    },
+    lastItem() {
+      const list = this.baseList();
+      const lastIndex = list.length - 1;
+      return { ...list[lastIndex] };
     },
   },
   methods: {
@@ -78,6 +92,23 @@ export default {
       // is from different dates
       return currentDate !== futureDate;
     },
+    onElementObserved(entries) {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (!isIntersecting) return;
+        this.observer.unobserve(target);
+        const address = this.lastItem.type.match(/\w+/)[0].concat("s");
+        this.$store.dispatch("getFileNames", [address, this.lastItem.name]);
+      });
+    },
+  },
+  created() {
+    this.observer = new IntersectionObserver(this.onElementObserved, {
+      root: this.$el,
+      threshold: 1,
+    });
+  },
+  beforeDestroy() {
+    this.observer.disconnect();
   },
 };
 </script>

@@ -39,12 +39,35 @@ export default {
       required: true,
       type: String,
     },
+    lastItem: {
+      type: Object,
+      default() {
+        return {
+          name: null,
+          type: null,
+          isSelect: null,
+          index: null,
+        };
+      },
+    },
+    observer: IntersectionObserver,
   },
-  inject: ["currentScene"],
+  inject: ["baseList", "currentScene"],
   computed: {
     isShowcase() {
       return this.currentScene() === "showcase";
     },
+  },
+  mounted() {
+    if (this.isShowcase) {
+      return;
+    }
+    if (
+      this.lastItem.name === this.fileName &&
+      this.lastItem.index !== this.baseList().length - 1
+    ) {
+      this.observer.observe(this.$el);
+    }
   },
 };
 </script>

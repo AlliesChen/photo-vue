@@ -20,14 +20,18 @@ export default {
       state[type].map((item) => item.name).indexOf(name),
   },
   mutations: {
-    listFiles(state, [type, items]) {
+    listFiles(state, [type, items, isFromName = false]) {
       const files = items.map((item) => ({
         name: item,
         isSelect: false,
         // NOTE: image/jpeg, video/mp4 etc.
         type: `${type.slice(0, -1)}/${item.match(/(?:\.)(\w+)$/)[1]}`,
       }));
-      state[type].unshift(...files);
+      if (isFromName) {
+        state[type].push(...files);
+      } else {
+        state[type].unshift(...files);
+      }
     },
     setSelected(state, [type, index]) {
       const currentStatus = this.getters.checkItem(type, index).isSelect;
@@ -38,13 +42,16 @@ export default {
     },
   },
   actions: {
-    getFileNames: async function (context, address) {
+    getFileNames: async function (context, [address, fromName]) {
       try {
         const response = await axios({
+          method: "get",
           url: `/${address}`,
+          params: { fromName },
         });
         const data = response.data ?? [];
-        context.commit("listFiles", [address, data]);
+        const isFromName = !!fromName;
+        context.commit("listFiles", [address, data, isFromName]);
       } catch (err) {
         throw new Error(err);
       }

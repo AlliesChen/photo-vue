@@ -135,6 +135,12 @@ export default {
         this.routeId = oldPath.params.id;
       }
       this.source = `${baseURL}/${this.routeType}/${this.routeId}`;
+      const list = this.baseList();
+      if (this.currentIndex === list.length - 1) {
+        const currentItem = list[this.currentIndex];
+        const address = currentItem.type.match(/\w+/)[0].concat("s");
+        this.$store.dispatch("getFileNames", [address, currentItem.name]);
+      }
     },
   },
   created() {
