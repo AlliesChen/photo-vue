@@ -1,20 +1,17 @@
 <template>
   <section
-    class="w-full h-full flex-col justify-flex-end items-center bg__black--tl"
+    class="w-full h-full flex-col justify-flex-end items-center bg--black-tl"
   >
-    <DelectionBtn class="btn danger rounded-lg"
-      >刪除{{ pageType }}</DelectionBtn
-    >
+    <button @click="deleteFiles" class="btn danger rounded-lg">
+      刪除{{ pageType }}
+    </button>
     <button @click="useScene" class="btn primary rounded-lg">取消</button>
   </section>
 </template>
 
 <script>
-import DelectionBtn from "../components/DeletionBtn.vue";
 export default {
-  components: {
-    DelectionBtn,
-  },
+  inject: ["baseList"],
   computed: {
     pageType() {
       switch (this.$route.name) {
@@ -28,6 +25,19 @@ export default {
     },
   },
   methods: {
+    deleteFiles() {
+      const list = this.baseList().reduce(
+        (prev, current) =>
+          current.isSelect ? prev.concat(current.name) : prev,
+        []
+      );
+      this.$store.dispatch("deleteFiles", list).then(() => {
+        // close the scene
+        this.$store.commit("useScene", "none");
+        // end the selection mode
+        this.$store.commit("useMode", "browse");
+      });
+    },
     useScene() {
       this.$store.commit("useScene", "none");
     },
@@ -36,8 +46,8 @@ export default {
 </script>
 
 <style scoped>
-/* tl: translucent */
-.bg__black--tl {
+/* translucent */
+.bg--black-tl {
   background-color: rgba(0, 0, 0, 0.5);
 }
 .btn {

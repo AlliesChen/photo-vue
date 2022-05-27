@@ -13,7 +13,10 @@
     >
       {{ btn.text }}
     </button>
-    <Upload-Btn class="btn absolute right-4" />
+    <Upload-Btn v-if="$route.name !== 'albums'" class="btn absolute right-4" />
+    <button v-else class="btn absolute right-4 rounded-lg">
+      <feather type="folder-plus" />
+    </button>
   </header>
 </template>
 
@@ -50,7 +53,7 @@ export default {
         case "videos":
           return `${counter}部影片`;
         default:
-          return `${counter}個檔案`;
+          return `${counter}本相簿`;
       }
     },
   },

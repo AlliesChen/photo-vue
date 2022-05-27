@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 import FileList from "./components/FileList.vue";
-import FileScene from "./views/FileScene.vue";
-import NotFoundPage from "./views/NotFoundPage.vue";
+import FilePage from "./views/pages/FilePage.vue";
+import NotFoundPage from "./views/pages/NotFoundPage.vue";
 
 Vue.use(Router);
 
@@ -32,7 +32,7 @@ export default new Router({
       // NOTE: path validation, e.g. image/12345.jpeg
       path: "/:type(image|video|album)/:id(\\d+\\.\\w+)",
       name: "file",
-      component: FileScene,
+      component: FilePage,
     },
     {
       path: "*",

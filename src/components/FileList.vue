@@ -69,7 +69,7 @@ export default {
   methods: {
     setFile(index) {
       if (this.currentMode() === "selection") {
-        this.$store.commit("setSelected", ["images", index]);
+        this.$store.commit("setSelected", [this.$route.name, index]);
       }
     },
     getDate(fileName) {

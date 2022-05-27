@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import DeletionScene from "./DeletionScene.vue";
+import DeletionScene from "../components/DeletionScene.vue";
 export default {
   name: "FilePages",
   components: {
