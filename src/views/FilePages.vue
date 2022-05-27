@@ -1,8 +1,6 @@
 <template>
   <main class="w-full relative">
-    <keep-alive :max="1">
-      <router-view :class="$route.name === 'file' && 'mask fixed top-0'" />
-    </keep-alive>
+    <router-view :class="$route.name === 'file' && 'mask fixed top-0'" />
     <Deletion-Scene
       v-if="currentScene() === 'deletion'"
       class="mask fixed top-0"

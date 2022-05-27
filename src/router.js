@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import FileList from "./components/FileList.vue";
+import AlbumList from "./components/AlbumList.vue";
 import FilePage from "./views/pages/FilePage.vue";
 import NotFoundPage from "./views/pages/NotFoundPage.vue";
 
@@ -26,6 +27,7 @@ export default new Router({
     {
       path: "/albums",
       name: "albums",
+      component: AlbumList,
     },
     {
       // to origin file

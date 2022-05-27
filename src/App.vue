@@ -36,6 +36,7 @@ export default {
   created() {
     this.$store.dispatch("getFileNames", ["images"]);
     this.$store.dispatch("getFileNames", ["videos"]);
+    this.$store.dispatch("getFileNames", ["albums"]);
   },
 };
 </script>

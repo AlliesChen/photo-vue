@@ -21,16 +21,24 @@ export default {
   },
   mutations: {
     listFiles(state, [type, items, isFromName = false]) {
-      const files = items.map((item) => ({
-        name: item,
-        isSelect: false,
-        // NOTE: image/jpeg, video/mp4 etc.
-        type: `${type.slice(0, -1)}/${item.match(/(?:\.)(\w+)$/)[1]}`,
-      }));
-      if (isFromName) {
-        state[type].push(...files);
+      if (type === "albums") {
+        const albums = items.map((item) => ({
+          ...item,
+          isSelect: false,
+        }));
+        state[type].unshift(...albums);
       } else {
-        state[type].unshift(...files);
+        const files = items.map((item) => ({
+          name: item,
+          isSelect: false,
+          // NOTE: image/jpeg, video/mp4 etc.
+          type: `${type.slice(0, -1)}/${item.match(/(?:\.)(\w+)$/)[1]}`,
+        }));
+        if (isFromName) {
+          state[type].push(...files);
+        } else {
+          state[type].unshift(...files);
+        }
       }
     },
     setSelected(state, [type, index]) {
@@ -115,5 +123,20 @@ export default {
         throw new Error("deletion fail", err);
       }
     },
+    /**
+    createAlbum: async function (context, album) {
+      try {
+        const response = await axios({
+          method: "post",
+          url: "/album",
+          headers: {
+            "Content-Type": "text/plain",
+          },
+          data: JSON.stringify(album),
+        });
+        const { data } = response;
+      }
+    },
+    */
   },
 };

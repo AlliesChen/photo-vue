@@ -39,6 +39,7 @@ export default {
       required: true,
       type: String,
     },
+    // Note: below is passed by FileList
     lastItem: {
       type: Object,
       default() {
