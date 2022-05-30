@@ -123,7 +123,6 @@ export default {
         throw new Error("deletion fail", err);
       }
     },
-    /**
     createAlbum: async function (context, album) {
       try {
         const response = await axios({
@@ -135,8 +134,10 @@ export default {
           data: JSON.stringify(album),
         });
         const { data } = response;
+        context.commit("listFiles", ["albums", new Array(data)]);
+      } catch (err) {
+        throw new Error("Fail to create a new album", err);
       }
     },
-    */
   },
 };

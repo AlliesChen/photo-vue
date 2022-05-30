@@ -14,7 +14,12 @@
       {{ btn.text }}
     </button>
     <Upload-Btn v-if="$route.name !== 'albums'" class="btn absolute right-4" />
-    <button v-else class="btn absolute right-4 rounded-lg">
+    <button
+      v-else
+      @click="useScene('creation')"
+      :disabled="currentScene() === 'creation'"
+      class="btn absolute right-4 rounded-lg"
+    >
       <feather type="folder-plus" />
     </button>
   </header>
@@ -43,7 +48,7 @@ export default {
       ],
     });
   },
-  inject: ["currentMode", "baseList"],
+  inject: ["currentMode", "currentScene", "baseList"],
   computed: {
     headerTitle() {
       const counter = this.baseList().length;
@@ -60,6 +65,9 @@ export default {
   methods: {
     useMode(mode) {
       this.$store.commit("useMode", mode);
+    },
+    useScene(scene) {
+      this.$store.commit("useScene", scene);
     },
   },
 };

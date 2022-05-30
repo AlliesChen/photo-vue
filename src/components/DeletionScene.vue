@@ -48,7 +48,7 @@ export default {
 <style scoped>
 /* translucent */
 .bg--black-tl {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--black-tl);
 }
 .btn {
   background-color: var(--white);

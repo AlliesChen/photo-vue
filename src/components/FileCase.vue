@@ -9,6 +9,7 @@
       'w-full',
     ]"
   />
+  <!-- TODO: Custom controls -->
   <video
     v-else
     :controls="isShowcase"

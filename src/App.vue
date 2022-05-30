@@ -58,12 +58,15 @@ export default {
   --font-noto-sans: "Noto Sans TC", sans-serif;
   --white: white;
   --black: black;
+  /* translucent */
+  --black-tl: rgba(0, 0, 0, 0.5);
   --pink-light: rgb(252, 231, 243);
   --pink: rgb(236, 72, 153);
   --pink-dark: rgb(131, 24, 67);
   --cyan-light: rgb(207, 250, 254);
   --cyan: rgb(6, 182, 212);
   --cyan-dark: rgb(22, 78, 99);
+  --amber: rgb(252, 211, 77);
 }
 
 body {

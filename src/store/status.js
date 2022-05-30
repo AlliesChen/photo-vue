@@ -24,6 +24,10 @@ export default {
         name: "showcase",
         isCurrent: false,
       },
+      {
+        name: "creation",
+        isCurrent: false,
+      },
     ],
   },
   getters: {

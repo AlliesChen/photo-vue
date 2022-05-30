@@ -68,10 +68,10 @@ export default {
     this.routeType = this.$route.params.type;
     this.routeId = this.$route.params.id;
   },
-  activated() {
+  mounted() {
     this.$store.commit("useScene", "showcase");
   },
-  deactivated() {
+  destroyed() {
     this.$store.commit("useScene", "none");
   },
 };
