@@ -27,15 +27,21 @@
         />
       </div>
     </li>
+    <Creation-Scene
+      v-if="currentScene() === 'creation'"
+      class="fixed bg--black-tl top-0"
+    />
   </ol>
 </template>
 
 <script>
 import FileCase from "./FileCase.vue";
+import CreationScene from "./CreationScene.vue";
 export default {
   name: "FileList",
   components: {
     FileCase,
+    CreationScene,
   },
   data() {
     return {
@@ -44,7 +50,7 @@ export default {
       observer: null,
     };
   },
-  inject: ["baseList", "currentMode"],
+  inject: ["baseList", "currentMode", "currentScene"],
   computed: {
     lastItem() {
       const list = this.baseList();

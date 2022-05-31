@@ -64,4 +64,7 @@ footer {
 .mask {
   z-index: 2;
 }
+.bg--black-tl {
+  background-color: var(--black-tl);
+}
 </style>

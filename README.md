@@ -27,7 +27,7 @@
 - [x] 瀏覽狀態下顯示檔案名稱為檔名前 14 碼，yyyy/mm/dd hh:mm:ss
 - [x] 可刪除檔案，刪除後即不見於收藏庫
 - [x] 單次載入最大 50 張圖片，超過的部分於滑動到最後一張(第 50 張)後繼續載入。
-- [ ] Video API
+- [ ] [Video API](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
 - [ ] 使用者操作結果以提示框顯示在右下角
 - [ ] 可篩選年/月/日顯示檔案
 

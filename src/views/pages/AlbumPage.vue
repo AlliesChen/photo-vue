@@ -16,7 +16,7 @@
         <div
           v-show="currentMode() === 'selection'"
           @click="setFile(index)"
-          class="absolute top-0 left-0 w-full h-full mask rounded-lg"
+          class="absolute top-0 left-0 w-full h-full bg--black-tl rounded-lg"
         >
           <feather
             :type="album.isSelect ? 'check-circle' : 'circle'"
@@ -28,7 +28,7 @@
     </article>
     <Creation-Scene
       v-if="currentScene() === 'creation'"
-      class="absolute mask"
+      class="absolute bg--black-tl"
     />
   </section>
 </template>
@@ -81,7 +81,7 @@ li {
   margin-inline: 1rem;
   background-color: var(--amber);
 }
-.mask {
+.bg--black-tl {
   background-color: var(--black-tl);
 }
 </style>

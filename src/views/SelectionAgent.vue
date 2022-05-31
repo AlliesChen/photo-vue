@@ -1,10 +1,18 @@
 <template>
   <div class="flex justify-space-around">
-    <button :disabled="counter === 0" class="flex">
+    <button
+      :disabled="counter === 0"
+      @click="useScene('creation')"
+      class="flex"
+    >
       <feather type="external-link" />
     </button>
     <p class="text-xl m-0">已選取{{ counter }}個項目</p>
-    <button :disabled="counter === 0" @click="useScene" class="flex">
+    <button
+      :disabled="counter === 0"
+      @click="useScene('deletion')"
+      class="flex"
+    >
       <feather type="trash-2" />
     </button>
   </div>
@@ -29,8 +37,8 @@ export default {
     });
   },
   methods: {
-    useScene() {
-      this.$store.commit("useScene", "deletion");
+    useScene(scene) {
+      this.$store.commit("useScene", scene);
     },
   },
 };
