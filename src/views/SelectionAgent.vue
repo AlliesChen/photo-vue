@@ -24,7 +24,7 @@ export default {
   destroyed() {
     this.baseList().forEach((item, index) => {
       if (item.isSelect) {
-        this.$store.commit("setSelected", [this.$route.name, index]);
+        this.$store.commit("setSelected", [this.$route.params.id, index]);
       }
     });
   },

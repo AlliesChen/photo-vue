@@ -2,21 +2,15 @@
   <article class="w-full h-full flex-col items-center bg--black">
     <header class="text-white flex items-center">
       {{ `${baseList().length - currentIndex}/${baseList().length}` }}
-      <!-- back to images or videos -->
+      <!-- back to the lists -->
       <router-link
-        :to="`/${routeType}s`"
+        :to="`/${$route.params.type}`"
         class="absolute right-4 flex items-center text-white"
       >
         <feather type="x" />
       </router-link>
     </header>
-    <Show-Case
-      class="main"
-      :routeType="routeType"
-      :routeId="routeId"
-      :currentIndex="currentIndex"
-      :fileType="fileType"
-    />
+    <Show-Case class="main" :currentIndex="currentIndex" :fileType="fileType" />
     <footer class="text-white flex items-center">{{ timestamp }}</footer>
   </article>
 </template>
@@ -28,45 +22,23 @@ export default {
   components: {
     ShowCase,
   },
-  data() {
-    return {
-      routeType: "",
-      routeId: "",
-      source: "",
-    };
-  },
   inject: ["baseList"],
   computed: {
     currentIndex() {
       return this.baseList()
         .map((item) => item.name)
-        .indexOf(this.routeId);
+        .indexOf(this.$route.params.id);
     },
     fileType() {
-      // Match and select the file extension (separate by the dot)
-      return `${this.routeType}/${this.routeId.match(/\w+/g)[1]}`;
+      const current = this.baseList()[this.currentIndex];
+      return `${current.type}/${current.ext}`;
     },
     timestamp() {
-      const timeFormat = this.routeId.match(
+      const timeFormat = this.$route.params.id.match(
         /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
       );
       return `${timeFormat[1]}/${timeFormat[2]}/${timeFormat[3]} ${timeFormat[4]}:${timeFormat[5]}:${timeFormat[6]}`;
     },
-  },
-  watch: {
-    $route(newPath, oldPath) {
-      if (Object.keys(newPath.params).length) {
-        this.routeType = newPath.params.type;
-        this.routeId = newPath.params.id;
-      } else {
-        this.routeType = oldPath.params.type;
-        this.routeId = oldPath.params.id;
-      }
-    },
-  },
-  created() {
-    this.routeType = this.$route.params.type;
-    this.routeId = this.$route.params.id;
   },
   mounted() {
     this.$store.commit("useScene", "showcase");

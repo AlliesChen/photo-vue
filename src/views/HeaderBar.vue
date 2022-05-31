@@ -13,7 +13,10 @@
     >
       {{ btn.text }}
     </button>
-    <Upload-Btn v-if="$route.name !== 'albums'" class="btn absolute right-4" />
+    <Upload-Btn
+      v-if="$route.params.type !== 'albums'"
+      class="btn absolute right-4"
+    />
     <button
       v-else
       @click="useScene('creation')"
@@ -52,13 +55,15 @@ export default {
   computed: {
     headerTitle() {
       const counter = this.baseList().length;
-      switch (this.$route.name) {
+      switch (this.$route.params.type) {
         case "images":
           return `${counter}張相片`;
         case "videos":
           return `${counter}部影片`;
-        default:
+        case "albums":
           return `${counter}本相簿`;
+        default:
+          return "Sorry!";
       }
     },
   },

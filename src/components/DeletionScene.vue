@@ -14,13 +14,15 @@ export default {
   inject: ["baseList"],
   computed: {
     pageType() {
-      switch (this.$route.name) {
+      switch (this.$route.params.type) {
         case "images":
           return "照片";
         case "videos":
           return "影片";
-        default:
+        case "albums":
           return "相簿";
+        default:
+          return "檔案?";
       }
     },
   },

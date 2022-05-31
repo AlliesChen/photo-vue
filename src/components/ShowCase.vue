@@ -7,21 +7,21 @@
   >
     <File-Case
       v-if="currentIndex > 0"
-      :fileType="prev.type"
+      :fileType="`${prev.type}/${prev.ext}`"
       :fileName="prev.name"
-      :source="`${baseURL}/${prev.type.match(/\w+/)[0]}/${prev.name}`"
+      :source="prev.origin"
     />
     <File-Case
       :fileType="fileType"
-      :fileName="routeId"
+      :fileName="$route.params.id"
       :source="source"
       class="carry"
     />
     <File-Case
       v-if="currentIndex < baseList().length - 1"
-      :fileType="next.type"
+      :fileType="`${next.type}/${next.ext}`"
       :fileName="next.name"
-      :source="`${baseURL}/${next.type.match(/\w+/)[0]}/${next.name}`"
+      :source="next.origin"
     />
   </main>
 </template>
@@ -36,8 +36,6 @@ export default {
   props: {
     currentIndex: Number,
     fileType: String,
-    routeType: String,
-    routeId: String,
   },
   data() {
     return {
@@ -49,7 +47,7 @@ export default {
   inject: ["baseList"],
   computed: {
     source() {
-      return `${baseURL}/${this.routeType}/${this.routeId}`;
+      return this.baseList()[this.currentIndex].origin;
     },
     prev() {
       return {
@@ -72,8 +70,10 @@ export default {
       const list = this.baseList();
       if (newIndex === list.length - 1) {
         const currentItem = list[newIndex];
-        const address = currentItem.type.match(/\w+/)[0].concat("s");
-        this.$store.dispatch("getFileNames", [address, currentItem.name]);
+        this.$store.dispatch("getFileNames", [
+          this.$route.params.type,
+          currentItem.name,
+        ]);
       }
     },
   },
@@ -97,14 +97,10 @@ export default {
         this.touchMoveX < -15 &&
         this.currentIndex < this.baseList().length - 1
       ) {
-        this.$router.push(
-          `/${this.next.type.match(/\w+/)[0]}/${this.next.name}`
-        );
+        this.$router.push(`/${this.next.list}/${this.next.name}`);
       }
       if (this.touchMoveX > 15 && this.currentIndex > 0) {
-        this.$router.push(
-          `/${this.prev.type.match(/\w+/)[0]}/${this.prev.name}`
-        );
+        this.$router.push(`/${this.prev.list}/${this.prev.name}`);
       }
       this.touchStartX = 0;
       this.touchMoveX = 0;

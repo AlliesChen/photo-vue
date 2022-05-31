@@ -1,11 +1,11 @@
 <template>
   <ol class="m-0 p-0">
     <li v-for="(item, index) in baseList()" :key="item.name" class="relative">
-      <router-link :to="fileRoot + '/' + item.name">
+      <router-link :to="`${$route.params.type}/${item.name}`">
         <File-Case
-          :source="thumbnailRoot + '/' + item.name"
-          :fileName="item.name"
           :fileType="item.type"
+          :source="item.type === 'image' ? item.small : item.origin"
+          :fileName="item.name"
           :observer="observer"
           :lastItem="lastItem"
         />
@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import { baseURL } from "../store/files";
 import FileCase from "./FileCase.vue";
 export default {
   name: "FileGallery",
@@ -47,19 +46,6 @@ export default {
   },
   inject: ["baseList", "currentMode"],
   computed: {
-    fileRoot() {
-      if (this.$route.name === "file") {
-        return this.$route.params.type;
-      }
-      return this.$route.name.slice(0, -1);
-    },
-    thumbnailRoot() {
-      if (this.fileRoot === "image") {
-        return `${baseURL}/${this.fileRoot}-xs`;
-      } else {
-        return `${baseURL}/${this.fileRoot}`;
-      }
-    },
     lastItem() {
       const list = this.baseList();
       const lastIndex = list.length - 1;
@@ -69,7 +55,7 @@ export default {
   methods: {
     setFile(index) {
       if (this.currentMode() === "selection") {
-        this.$store.commit("setSelected", [this.$route.name, index]);
+        this.$store.commit("setSelected", [this.$route.params.id, index]);
       }
     },
     getDate(fileName) {

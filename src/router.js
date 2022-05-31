@@ -15,24 +15,17 @@ export default new Router({
       name: "home",
     },
     {
-      path: "/images",
-      name: "images",
+      path: "/:type(images|videos)",
+      name: "files",
       component: FileList,
     },
     {
-      path: "/videos",
-      name: "videos",
-      component: FileList,
-    },
-    {
-      path: "/albums",
+      path: "/:type(albums)",
       name: "albums",
       component: AlbumList,
     },
     {
-      // to origin file
-      // NOTE: path validation, e.g. image/12345.jpeg
-      path: "/:type(image|video|album)/:id(\\d+\\.\\w+)",
+      path: "/:type(images|videos|albums)/:id(\\d+\\.\\w+)",
       name: "file",
       component: FilePage,
     },

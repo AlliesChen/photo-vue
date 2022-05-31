@@ -21,24 +21,44 @@ export default {
   },
   mutations: {
     listFiles(state, [type, items, isFromName = false]) {
-      if (type === "albums") {
-        const albums = items.map((item) => ({
-          ...item,
-          isSelect: false,
-        }));
-        state[type].unshift(...albums);
+      let objs;
+      switch (type) {
+        case "albums":
+          objs = items.map((item) => ({
+            ...item,
+            isSelect: false,
+          }));
+          break;
+        case "images":
+          objs = items.map((item) => ({
+            name: item,
+            list: "images",
+            isSelect: false,
+            type: "image",
+            // NOTE: jpeg, png etc.
+            ext: `${item.match(/\w+/g)[1]}`,
+            origin: `${baseURL}/image/${item}`,
+            small: `${baseURL}/image-xs/${item}`,
+          }));
+          break;
+        case "videos":
+          objs = items.map((item) => ({
+            name: item,
+            list: "videos",
+            isSelect: false,
+            type: "video",
+            // NOTE: mp4
+            ext: `${item.match(/\w+/g)[1]}`,
+            origin: `${baseURL}/video/${item}`,
+          }));
+          break;
+        default:
+          throw new Error("Unknown type");
+      }
+      if (isFromName) {
+        state[type].push(...objs);
       } else {
-        const files = items.map((item) => ({
-          name: item,
-          isSelect: false,
-          // NOTE: image/jpeg, video/mp4 etc.
-          type: `${type.slice(0, -1)}/${item.match(/(?:\.)(\w+)$/)[1]}`,
-        }));
-        if (isFromName) {
-          state[type].push(...files);
-        } else {
-          state[type].unshift(...files);
-        }
+        state[type].unshift(...objs);
       }
     },
     setSelected(state, [type, index]) {

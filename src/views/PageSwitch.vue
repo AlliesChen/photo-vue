@@ -3,9 +3,9 @@
     <router-link
       v-for="btn in btns"
       :key="btn.uuid"
-      :to="btn.to"
+      :to="`/${btn.to}`"
       class="btn flex-col justify-flex-start items-center h-full"
-      :class="$route.name === btn.to.slice(1) ? 'text-cyan' : 'text-black'"
+      :class="$route.params.type === btn.to ? 'text-cyan' : 'text-black'"
     >
       <feather :type="btn.icon" />
       <small>{{ btn.text }}</small>
@@ -23,19 +23,19 @@ export default {
           uuid: this.$uuid.v1(),
           icon: "image",
           text: "圖庫",
-          to: "/images",
+          to: "images",
         },
         {
           uuid: this.$uuid.v1(),
           icon: "video",
           text: "影片",
-          to: "/videos",
+          to: "videos",
         },
         {
           uuid: this.$uuid.v1(),
           icon: "book",
           text: "相簿",
-          to: "/albums",
+          to: "albums",
         },
       ],
     };
