@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import FileList from "./components/FileList.vue";
-import AlbumList from "./components/AlbumList.vue";
+import AlbumPage from "./views/pages/AlbumPage.vue";
 import FilePage from "./views/pages/FilePage.vue";
 import NotFoundPage from "./views/pages/NotFoundPage.vue";
 
@@ -22,7 +22,7 @@ export default new Router({
     {
       path: "/:type(albums)",
       name: "albums",
-      component: AlbumList,
+      component: AlbumPage,
     },
     {
       path: "/:type(images|videos|albums)/:id(\\d+\\.\\w+)",

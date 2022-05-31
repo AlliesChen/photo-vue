@@ -26,7 +26,7 @@ export default {
   computed: {
     currentIndex() {
       return this.baseList()
-        .map((item) => item.name)
+        .map((item) => item.id)
         .indexOf(this.$route.params.id);
     },
     fileType() {

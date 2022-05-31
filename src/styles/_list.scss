@@ -29,14 +29,6 @@
   }
 }
 
-@mixin setRight($multiplicand...) {
-  @for $i from 0 to length($multiplicand) {
-    .right-#{nth($multiplicand, $i + 1)} {
-      right: calc(#{nth($multiplicand, $i + 1)} * 0.25rem);
-    }
-  }
-}
-
 @mixin setTop($multiplicand...) {
   @for $i from 0 to length($multiplicand) {
     .top-#{nth($multiplicand, $i + 1)} {
@@ -45,10 +37,26 @@
   }
 }
 
+@mixin setRight($multiplicand...) {
+  @for $i from 0 to length($multiplicand) {
+    .right-#{nth($multiplicand, $i + 1)} {
+      right: calc(#{nth($multiplicand, $i + 1)} * 0.25rem);
+    }
+  }
+}
+
 @mixin setBottom($multiplicand...) {
   @for $i from 0 to length($multiplicand) {
     .bottom-#{nth($multiplicand, $i + 1)} {
       bottom: calc(#{nth($multiplicand, $i + 1)} * 0.25rem);
+    }
+  }
+}
+
+@mixin setLeft($multiplicand...) {
+  @for $i from 0 to length($multiplicand) {
+    .left-#{nth($multiplicand, $i + 1)} {
+      left: calc(#{nth($multiplicand, $i + 1)} * 0.25rem);
     }
   }
 }

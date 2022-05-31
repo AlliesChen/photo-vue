@@ -65,3 +65,7 @@
 | |- pages/ #放置 router 使用的頁面  
 | | |- FilePage.vue #點擊圖片展開後的頁面  
 | | |- NotFoundPage.vue #404 頁面
+
+// TODO:
+
+當加入相片到相簿時，在相片裡的 albums 物件，記錄下相簿的 id

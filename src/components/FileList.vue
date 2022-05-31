@@ -1,11 +1,11 @@
 <template>
   <ol class="m-0 p-0">
-    <li v-for="(item, index) in baseList()" :key="item.name" class="relative">
-      <router-link :to="`${$route.params.type}/${item.name}`">
+    <li v-for="(item, index) in baseList()" :key="item.id" class="relative">
+      <router-link :to="`${$route.params.type}/${item.id}`">
         <File-Case
           :fileType="item.type"
           :source="item.type === 'image' ? item.small : item.origin"
-          :fileName="item.name"
+          :fileName="item.id"
           :observer="observer"
           :lastItem="lastItem"
         />
@@ -14,7 +14,7 @@
         v-if="showDate(index)"
         class="_icon absolute flex justify-center items-center"
       >
-        {{ getDate(item.name) }}
+        {{ getDate(item.id) }}
       </div>
       <div
         v-show="currentMode() === 'selection'"
@@ -33,7 +33,7 @@
 <script>
 import FileCase from "./FileCase.vue";
 export default {
-  name: "FileGallery",
+  name: "FileList",
   components: {
     FileCase,
   },
@@ -55,7 +55,7 @@ export default {
   methods: {
     setFile(index) {
       if (this.currentMode() === "selection") {
-        this.$store.commit("setSelected", [this.$route.params.id, index]);
+        this.$store.commit("setSelected", [this.$route.params.type, index]);
       }
     },
     getDate(fileName) {
@@ -69,10 +69,10 @@ export default {
       const last = parseInt(currentIdx, 10) - 3;
       // not an item undefined in the list
       if (last >= this.baseList().length) return false;
-      const currentDate = this.getDate(this.baseList()[currentIdx].name)
+      const currentDate = this.getDate(this.baseList()[currentIdx].id)
         .split("/")
         .join();
-      const futureDate = this.getDate(this.baseList()[last].name)
+      const futureDate = this.getDate(this.baseList()[last].id)
         .split("/")
         .join();
       // is from different dates
@@ -83,7 +83,7 @@ export default {
         if (!isIntersecting) return;
         this.observer.unobserve(target);
         const address = this.lastItem.type.match(/\w+/)[0].concat("s");
-        this.$store.dispatch("getFileNames", [address, this.lastItem.name]);
+        this.$store.dispatch("getFileNames", [address, this.lastItem.id]);
       });
     },
   },

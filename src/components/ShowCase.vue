@@ -8,7 +8,7 @@
     <File-Case
       v-if="currentIndex > 0"
       :fileType="`${prev.type}/${prev.ext}`"
-      :fileName="prev.name"
+      :fileName="prev.id"
       :source="prev.origin"
     />
     <File-Case
@@ -20,7 +20,7 @@
     <File-Case
       v-if="currentIndex < baseList().length - 1"
       :fileType="`${next.type}/${next.ext}`"
-      :fileName="next.name"
+      :fileName="next.id"
       :source="next.origin"
     />
   </main>
@@ -72,7 +72,7 @@ export default {
         const currentItem = list[newIndex];
         this.$store.dispatch("getFileNames", [
           this.$route.params.type,
-          currentItem.name,
+          currentItem.id,
         ]);
       }
     },
@@ -97,10 +97,10 @@ export default {
         this.touchMoveX < -15 &&
         this.currentIndex < this.baseList().length - 1
       ) {
-        this.$router.push(`/${this.next.list}/${this.next.name}`);
+        this.$router.push(`/${this.next.list}/${this.next.id}`);
       }
       if (this.touchMoveX > 15 && this.currentIndex > 0) {
-        this.$router.push(`/${this.prev.list}/${this.prev.name}`);
+        this.$router.push(`/${this.prev.list}/${this.prev.id}`);
       }
       this.touchStartX = 0;
       this.touchMoveX = 0;

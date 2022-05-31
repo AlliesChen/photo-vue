@@ -16,22 +16,24 @@ export default {
     checkState: (state) => (type) =>
       Object.prototype.hasOwnProperty.call(state, type) ? state[type] : [],
     checkItem: (state) => (type, index) => state[type][index],
-    checkIndex: (state) => (type, name) =>
-      state[type].map((item) => item.name).indexOf(name),
+    checkIndex: (state) => (type, id) =>
+      state[type].map((item) => item.id).indexOf(id),
   },
   mutations: {
     listFiles(state, [type, items, isFromName = false]) {
       let objs;
       switch (type) {
         case "albums":
-          objs = items.map((item) => ({
-            ...item,
-            isSelect: false,
-          }));
+          objs = items.map((item) => {
+            return {
+              ...item,
+              isSelect: false,
+            };
+          });
           break;
         case "images":
           objs = items.map((item) => ({
-            name: item,
+            id: item,
             list: "images",
             isSelect: false,
             type: "image",
@@ -39,17 +41,19 @@ export default {
             ext: `${item.match(/\w+/g)[1]}`,
             origin: `${baseURL}/image/${item}`,
             small: `${baseURL}/image-xs/${item}`,
+            albums: [],
           }));
           break;
         case "videos":
           objs = items.map((item) => ({
-            name: item,
+            id: item,
             list: "videos",
             isSelect: false,
             type: "video",
             // NOTE: mp4
             ext: `${item.match(/\w+/g)[1]}`,
             origin: `${baseURL}/video/${item}`,
+            albums: [],
           }));
           break;
         default:
@@ -120,7 +124,7 @@ export default {
         throw new Error("Something wrong in the process of uploading", err);
       }
     },
-    deleteFiles: async function (context, files) {
+    deleteItems: async function (context, files) {
       const isImage = new RegExp(/(?:.)(png|jpe?g)$/);
       try {
         const response = await axios({
@@ -140,7 +144,22 @@ export default {
           }
         }
       } catch (err) {
-        throw new Error("deletion fail", err);
+        throw new Error("deleting files failed", err);
+      }
+    },
+    deleteAlbums: async function (context, albums) {
+      for (const album of albums) {
+        try {
+          const response = await axios({
+            method: "delete",
+            url: `/album/${album}`,
+          });
+          const { data } = response;
+          const index = context.getters.checkIndex("albums", data.toString());
+          context.commit("deleteFile", ["albums", index]);
+        } catch (err) {
+          throw new Error("deleting albums failed", err);
+        }
       }
     },
     createAlbum: async function (context, album) {

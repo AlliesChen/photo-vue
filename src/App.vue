@@ -49,6 +49,7 @@ export default {
 @include main.setTop(0);
 @include main.setRight(1, 4, 16);
 @include main.setBottom(1);
+@include main.setLeft(0);
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap");
 @import url("styles/basics.css");
 

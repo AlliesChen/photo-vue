@@ -45,7 +45,7 @@ export default {
       type: Object,
       default() {
         return {
-          name: null,
+          id: null,
           type: null,
           isSelect: null,
           index: null,
@@ -65,7 +65,7 @@ export default {
       return;
     }
     if (
-      this.lastItem.name === this.fileName &&
+      this.lastItem.id === this.fileName &&
       this.lastItem.index !== this.baseList().length - 1
     ) {
       this.observer.observe(this.$el);
