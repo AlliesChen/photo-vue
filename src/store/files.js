@@ -17,52 +17,48 @@ export default {
       Object.prototype.hasOwnProperty.call(state, type) ? state[type] : [],
     checkItem: (state) => (type, index) => state[type][index],
     checkIndex: (state) => (type, id) =>
-      state[type].map((item) => item.id).indexOf(id),
+      state[type].findIndex((item) => item.id === id),
   },
   mutations: {
     listFiles(state, [type, items, isFromName = false]) {
       let objs;
-      switch (type) {
-        case "albums":
-          objs = items.map((item) => {
-            return {
-              ...item,
-              isSelect: false,
-            };
-          });
-          break;
-        case "images":
-          objs = items.map((item) => ({
-            id: item,
-            list: "images",
-            isSelect: false,
-            type: "image",
-            // NOTE: jpeg, png etc.
-            ext: `${item.match(/\w+/g)[1]}`,
-            origin: `${baseURL}/image/${item}`,
-            small: `${baseURL}/image-xs/${item}`,
-            albums: [],
-          }));
-          break;
-        case "videos":
-          objs = items.map((item) => ({
-            id: item,
-            list: "videos",
-            isSelect: false,
-            type: "video",
-            // NOTE: mp4
-            ext: `${item.match(/\w+/g)[1]}`,
-            origin: `${baseURL}/video/${item}`,
-            albums: [],
-          }));
-          break;
-        default:
-          throw new Error("Unknown type");
+      if (type === "images") {
+        objs = items.map((item) => ({
+          id: item,
+          list: "images",
+          isSelect: false,
+          type: "image",
+          // NOTE: jpeg, png etc.
+          ext: `${item.match(/\w+/g)[1]}`,
+          origin: `${baseURL}/image/${item}`,
+          small: `${baseURL}/image-xs/${item}`,
+        }));
+      } else {
+        objs = items.map((item) => ({
+          id: item,
+          list: "videos",
+          isSelect: false,
+          type: "video",
+          // NOTE: mp4
+          ext: `${item.match(/\w+/g)[1]}`,
+          origin: `${baseURL}/video/${item}`,
+        }));
       }
       if (isFromName) {
         state[type].push(...objs);
       } else {
         state[type].unshift(...objs);
+      }
+    },
+    listAlbums(state, albums) {
+      for (const album of albums) {
+        const obj = Object.assign(album, { isSelect: false });
+        const index = state.albums.findIndex((album) => album.id === obj.id);
+        if (index < 0) {
+          state.albums.push(obj);
+        } else {
+          state.albums[index].photoList.unshift(...obj.photoList);
+        }
       }
     },
     setSelected(state, [type, index]) {
@@ -84,6 +80,18 @@ export default {
         const data = response.data ?? [];
         const isFromName = !!fromName;
         context.commit("listFiles", [address, data, isFromName]);
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+    getAlbumNames: async function (context) {
+      try {
+        const response = await axios({
+          method: "get",
+          url: `/albums`,
+        });
+        const data = response.data;
+        context.commit("listAlbums", data);
       } catch (err) {
         throw new Error(err);
       }
@@ -173,9 +181,25 @@ export default {
           data: JSON.stringify(album),
         });
         const { data } = response;
-        context.commit("listFiles", ["albums", new Array(data)]);
+        context.commit("listAlbums", new Array(data));
       } catch (err) {
         throw new Error("Fail to create a new album", err);
+      }
+    },
+    addItems: async function (context, [id, items]) {
+      try {
+        const response = await axios({
+          method: "put",
+          url: `album/addphoto/${id}`,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: JSON.stringify(items),
+        });
+        const { data } = response;
+        context.commit("listAlbums", new Array(data));
+      } catch (err) {
+        throw new Error("Fail to add items to the album", err);
       }
     },
   },

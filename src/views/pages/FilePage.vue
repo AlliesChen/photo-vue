@@ -25,9 +25,9 @@ export default {
   inject: ["baseList"],
   computed: {
     currentIndex() {
-      return this.baseList()
-        .map((item) => item.id)
-        .indexOf(this.$route.params.id);
+      return this.baseList().findIndex(
+        (item) => item.id === this.$route.params.id
+      );
     },
     fileType() {
       const current = this.baseList()[this.currentIndex];

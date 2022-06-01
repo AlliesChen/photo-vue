@@ -2,16 +2,18 @@
   <header class="sticky w-full justify-center items-center">
     <h2 class="text-white">{{ headerTitle }}</h2>
     <button
-      v-for="btn in btns"
-      @click="useMode(btn.to)"
-      :key="btn.uuid"
-      :class="
-        currentMode() === btn.mode
-          ? 'btn absolute rectangle rounded right-16'
-          : 'none'
-      "
+      @click="useMode('selection')"
+      v-show="currentMode() === 'browse'"
+      class="btn absolute rectangle rounded right-16"
     >
-      {{ btn.text }}
+      選取
+    </button>
+    <button
+      @click="resetStatus()"
+      v-show="currentMode() === 'selection'"
+      class="btn absolute rectangle rounded right-16"
+    >
+      取消
     </button>
     <Upload-Btn
       v-if="$route.params.type !== 'albums'"
@@ -33,24 +35,6 @@ import UploadBtn from "../components/UploadBtn.vue";
 export default {
   name: "HeaderBar",
   components: { UploadBtn },
-  data() {
-    return Object.freeze({
-      btns: [
-        {
-          uuid: this.$uuid.v1(),
-          text: "選取",
-          mode: "browse",
-          to: "selection",
-        },
-        {
-          uuid: this.$uuid.v1(),
-          text: "取消",
-          mode: "selection",
-          to: "browse",
-        },
-      ],
-    });
-  },
   inject: ["currentMode", "currentScene", "baseList"],
   computed: {
     headerTitle() {
@@ -74,6 +58,10 @@ export default {
     useScene(scene) {
       this.$store.commit("useScene", scene);
     },
+    resetStatus() {
+      this.useScene("none");
+      this.useMode("browse");
+    },
   },
 };
 </script>
@@ -92,13 +80,11 @@ header {
     rgba(255, 255, 255, 0.65) 100%
   );
 }
-
 .btn {
   font-size: 1rem;
   color: var(--white);
   background-color: gray;
 }
-
 .rectangle {
   padding: 0.25rem 0.5rem;
 }

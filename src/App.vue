@@ -35,7 +35,9 @@ export default {
   created() {
     this.$store.dispatch("getFileNames", ["images"]);
     this.$store.dispatch("getFileNames", ["videos"]);
-    this.$store.dispatch("getFileNames", ["albums"]);
+  },
+  mounted() {
+    this.$store.dispatch("getAlbumNames");
   },
 };
 </script>

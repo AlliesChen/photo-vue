@@ -5,7 +5,9 @@
     <button @click="deleteItems" class="btn danger rounded-lg">
       刪除{{ pageType }}
     </button>
-    <button @click="useScene" class="btn primary rounded-lg">取消</button>
+    <button @click="useScene('none')" class="btn primary rounded-lg">
+      取消
+    </button>
   </section>
 </template>
 

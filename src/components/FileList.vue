@@ -125,10 +125,11 @@ img {
   background-color: $mask-cyan;
 }
 ._icon {
-  width: 40%;
-  height: 15%;
   top: -0.5rem;
   left: 0.5rem;
+  width: fit-content;
+  height: 15%;
+  padding-inline: 0.5rem;
   background-color: $mask-cyan;
   color: var(--cyan-light);
   border-radius: 2vw;

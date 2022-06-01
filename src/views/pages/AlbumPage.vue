@@ -5,25 +5,6 @@
       :key="album.name"
       class="flex-col items-center"
     >
-      <ul class="relative folder rounded-lg p-4">
-        <li v-for="item in listFiles(album)" :key="item.id">
-          <File-Case
-            :source="item.root"
-            :fileName="item.id"
-            :fileType="item.type"
-          />
-        </li>
-        <div
-          v-show="currentMode() === 'selection'"
-          @click="setFile(index)"
-          class="absolute top-0 left-0 w-full h-full bg--black-tl rounded-lg"
-        >
-          <feather
-            :type="album.isSelect ? 'check-circle' : 'circle'"
-            class="absolute right-1 bottom-1 text-white"
-          />
-        </div>
-      </ul>
       {{ album.name }}
     </article>
     <Creation-Scene
@@ -83,5 +64,8 @@ li {
 }
 .bg--black-tl {
   background-color: var(--black-tl);
+}
+.bg--cyan-tl {
+  background-color: rgba(22, 78, 99, 0.7);
 }
 </style>
