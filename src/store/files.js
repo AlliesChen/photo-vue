@@ -1,5 +1,49 @@
 import axios from "axios";
 const baseURL = "http://127.0.0.1:8080";
+
+function checkExtension(name) {
+  const ext = name.match(/\w+/g)[1].toLowerCase();
+  // is images
+  if (/png|jpe?g/.test(ext)) {
+    return { ext, group: "images" };
+  }
+  // is videos
+  if (/mp4/.test(ext)) {
+    return { ext, group: "videos" };
+  }
+}
+
+function expandFilesContent(items) {
+  const objs = [];
+  for (const name of items) {
+    const file = checkExtension(name);
+    if (file.group === "images") {
+      objs.push({
+        id: name,
+        list: "images",
+        isSelect: false,
+        type: "image",
+        // NOTE: jpeg, png etc.
+        ext: file.ext,
+        origin: `${baseURL}/image/${name}`,
+        small: `${baseURL}/image-xs/${name}`,
+      });
+    }
+    if (file.group === "videos") {
+      objs.push({
+        id: name,
+        list: "videos",
+        isSelect: false,
+        type: "video",
+        // NOTE: mp4
+        ext: file.ext,
+        origin: `${baseURL}/video/${name}`,
+      });
+    }
+  }
+  return objs;
+}
+
 axios.defaults.baseURL = baseURL;
 export { baseURL };
 export default {
@@ -21,45 +65,17 @@ export default {
   },
   mutations: {
     listFiles(state, [type, items, isFromName = false]) {
-      let objs;
-      if (type === "images") {
-        objs = items.map((item) => ({
-          id: item,
-          list: "images",
-          isSelect: false,
-          type: "image",
-          // NOTE: jpeg, png etc.
-          ext: `${item.match(/\w+/g)[1]}`,
-          origin: `${baseURL}/image/${item}`,
-          small: `${baseURL}/image-xs/${item}`,
-        }));
-      } else {
-        objs = items.map((item) => ({
-          id: item,
-          list: "videos",
-          isSelect: false,
-          type: "video",
-          // NOTE: mp4
-          ext: `${item.match(/\w+/g)[1]}`,
-          origin: `${baseURL}/video/${item}`,
-        }));
-      }
       if (isFromName) {
-        state[type].push(...objs);
+        state[type].push(...items);
       } else {
-        state[type].unshift(...objs);
+        state[type].unshift(...items);
       }
     },
-    listAlbums(state, albums) {
-      for (const album of albums) {
-        const obj = Object.assign(album, { isSelect: false });
-        const index = state.albums.findIndex((album) => album.id === obj.id);
-        if (index < 0) {
-          state.albums.push(obj);
-        } else {
-          state.albums[index].photoList.unshift(...obj.photoList);
-        }
-      }
+    updateAlbum(state, album) {
+      const index = state.albums.findIndex((item) => item.id === album.id);
+      const [...photoList] = album.photoList;
+      album.photoList = expandFilesContent(photoList);
+      state.albums[index].photoList = [...album.photoList];
     },
     setSelected(state, [type, index]) {
       const currentStatus = this.getters.checkItem(type, index).isSelect;
@@ -79,10 +95,22 @@ export default {
         });
         const data = response.data ?? [];
         const isFromName = !!fromName;
-        context.commit("listFiles", [address, data, isFromName]);
+        const localFiles = expandFilesContent(data);
+        context.commit("listFiles", [address, localFiles, isFromName]);
       } catch (err) {
         throw new Error(err);
       }
+    },
+    listAlbums(context, albums) {
+      albums.map((album) => {
+        const obj = Object.assign(album, { isSelect: false });
+        const [...photoList] = obj.photoList;
+        if (photoList.length) {
+          obj.photoList = expandFilesContent(photoList);
+        }
+        return obj;
+      });
+      context.commit("listFiles", ["albums", albums]);
     },
     getAlbumNames: async function (context) {
       try {
@@ -91,7 +119,7 @@ export default {
           url: `/albums`,
         });
         const data = response.data;
-        context.commit("listAlbums", data);
+        context.dispatch("listAlbums", data);
       } catch (err) {
         throw new Error(err);
       }
@@ -181,7 +209,7 @@ export default {
           data: JSON.stringify(album),
         });
         const { data } = response;
-        context.commit("listAlbums", new Array(data));
+        context.dispatch("listAlbums", new Array(data));
       } catch (err) {
         throw new Error("Fail to create a new album", err);
       }
@@ -197,7 +225,7 @@ export default {
           data: JSON.stringify(items),
         });
         const { data } = response;
-        context.commit("listAlbums", new Array(data));
+        context.commit("updateAlbum", data);
       } catch (err) {
         throw new Error("Fail to add items to the album", err);
       }
