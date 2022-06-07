@@ -25,7 +25,12 @@ export default new Router({
       component: AlbumPage,
     },
     {
-      path: "/:type(images|videos|albums)/:id(\\d+\\.\\w+)",
+      path: "/:type(albums)/:id(\\d+)",
+      name: "album",
+      component: FileList,
+    },
+    {
+      path: "/:type(images|videos)/:id(\\d+\\.\\w+)",
       name: "file",
       component: FilePage,
     },

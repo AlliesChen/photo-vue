@@ -21,7 +21,13 @@ export default {
   computed: {
     // Having the list be processed in prior
     baseList() {
-      const { type } = this.$route.params;
+      const { type, id } = this.$route.params;
+      if (type === "albums" && id) {
+        const index = this.$store.getters
+          .checkState(type)
+          .findIndex((album) => album.id === id);
+        return this.$store.getters.checkState(type)[index].photoList;
+      }
       return this.$store.getters.checkState(type);
     },
   },
