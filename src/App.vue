@@ -10,6 +10,7 @@
 import HeaderBar from "./views/HeaderBar.vue";
 import FilePages from "./views/FilePages.vue";
 import FooterBar from "./views/FooterBar.vue";
+import { useStatusStore } from "@/store/status_cp";
 
 export default {
   name: "App",
@@ -33,8 +34,8 @@ export default {
   },
   provide() {
     return {
-      currentMode: () => this.$store.getters.currentMode,
-      currentScene: () => this.$store.getters.currentScene,
+      currentMode: () => this.status.currentMode,
+      currentScene: () => this.status.currentMode,
       baseList: () => this.baseList,
     };
   },
@@ -42,6 +43,7 @@ export default {
     this.$store.dispatch("getFileNames", ["images"]);
     this.$store.dispatch("getFileNames", ["videos"]);
     this.$store.dispatch("getAlbumNames");
+    this.status = useStatusStore();
   },
 };
 </script>
