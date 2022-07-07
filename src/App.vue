@@ -35,15 +35,15 @@ export default {
   provide() {
     return {
       currentMode: () => this.status.currentMode,
-      currentScene: () => this.status.currentMode,
+      currentScene: () => this.status.currentScene,
       baseList: () => this.baseList,
     };
   },
   created() {
+    this.status = useStatusStore();
     this.$store.dispatch("getFileNames", ["images"]);
     this.$store.dispatch("getFileNames", ["videos"]);
     this.$store.dispatch("getAlbumNames");
-    this.status = useStatusStore();
   },
 };
 </script>

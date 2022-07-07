@@ -32,6 +32,7 @@
 
 <script>
 import UploadBtn from "../components/UploadBtn.vue";
+import { useStatusStore } from "@/store/status_cp";
 export default {
   name: "HeaderBar",
   components: { UploadBtn },
@@ -53,15 +54,18 @@ export default {
   },
   methods: {
     useMode(mode) {
-      this.$store.commit("useMode", mode);
+      this.status.useMode(mode);
     },
     useScene(scene) {
-      this.$store.commit("useScene", scene);
+      this.status.useScene(scene);
     },
     resetStatus() {
       this.useScene("none");
       this.useMode("browse");
     },
+  },
+  created() {
+    this.status = useStatusStore();
   },
 };
 </script>

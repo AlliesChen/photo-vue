@@ -43,8 +43,8 @@ export const useStatusStore = defineStore("status", {
     },
   },
   actions: {
-    useMode(state, target) {
-      state.modes.forEach((mode) => {
+    useMode(target) {
+      this.modes.forEach((mode) => {
         if (mode.name === target) {
           mode.isCurrent = true;
         } else {
@@ -52,8 +52,8 @@ export const useStatusStore = defineStore("status", {
         }
       });
     },
-    useScene(state, target) {
-      state.scenes.forEach((scene) => {
+    useScene(target) {
+      this.scenes.forEach((scene) => {
         if (scene.name === target) {
           scene.isCurrent = true;
         } else {

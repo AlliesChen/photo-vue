@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { useStatusStore } from "@/store/status_cp";
 export default {
   inject: ["baseList"],
   computed: {
@@ -38,8 +39,11 @@ export default {
   },
   methods: {
     useScene(scene) {
-      this.$store.commit("useScene", scene);
+      this.status.useScene(scene);
     },
+  },
+  created() {
+    this.status = useStatusStore();
   },
 };
 </script>

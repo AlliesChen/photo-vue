@@ -17,6 +17,7 @@
 
 <script>
 import ShowCase from "../../components/ShowCase.vue";
+import { useStatusStore } from "@/store/status_cp";
 export default {
   name: "FilePage",
   components: {
@@ -40,11 +41,14 @@ export default {
       return `${timeFormat[1]}/${timeFormat[2]}/${timeFormat[3]} ${timeFormat[4]}:${timeFormat[5]}:${timeFormat[6]}`;
     },
   },
+  created() {
+    this.status = useStatusStore();
+  },
   mounted() {
-    this.$store.commit("useScene", "showcase");
+    this.status.useScene("showcase");
   },
   destroyed() {
-    this.$store.commit("useScene", "none");
+    this.status.useScene("none");
   },
 };
 </script>
