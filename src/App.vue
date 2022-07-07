@@ -26,7 +26,7 @@ export default {
         const index = this.$store.getters
           .checkState(type)
           .findIndex((album) => album.id === id);
-        return this.$store.getters.checkState(type)[index].photoList;
+        return this.$store.getters.checkState(type)[index]?.photoList;
       }
       return this.$store.getters.checkState(type);
     },
@@ -41,8 +41,6 @@ export default {
   created() {
     this.$store.dispatch("getFileNames", ["images"]);
     this.$store.dispatch("getFileNames", ["videos"]);
-  },
-  mounted() {
     this.$store.dispatch("getAlbumNames");
   },
 };

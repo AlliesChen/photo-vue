@@ -38,7 +38,7 @@ export default {
   inject: ["currentMode", "currentScene", "baseList"],
   computed: {
     headerTitle() {
-      const counter = this.baseList().length;
+      const counter = this.baseList()?.length;
       switch (this.$route.params.type) {
         case "images":
           return `${counter}張相片`;

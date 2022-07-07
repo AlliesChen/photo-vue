@@ -13,7 +13,7 @@
     />
     <File-Case
       :fileType="fileType"
-      :fileName="$route.params.id"
+      :fileName="$route.params.name"
       :source="source"
       class="carry"
     />

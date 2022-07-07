@@ -26,7 +26,7 @@ export default {
   computed: {
     currentIndex() {
       return this.baseList().findIndex(
-        (item) => item.id === this.$route.params.id
+        (item) => item.id === this.$route.params.name
       );
     },
     fileType() {
@@ -34,7 +34,7 @@ export default {
       return `${current.type}/${current.ext}`;
     },
     timestamp() {
-      const timeFormat = this.$route.params.id.match(
+      const timeFormat = this.$route.params.name.match(
         /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
       );
       return `${timeFormat[1]}/${timeFormat[2]}/${timeFormat[3]} ${timeFormat[4]}:${timeFormat[5]}:${timeFormat[6]}`;

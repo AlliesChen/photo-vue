@@ -30,9 +30,15 @@ export default new Router({
       component: FileList,
     },
     {
-      path: "/:type(images|videos)/:id(\\d+\\.\\w+)",
+      path: "/:type(albums)/:id(\\d+)/:name(\\d+\\.\\w+)",
       name: "file",
       component: FilePage,
+    },
+    {
+      path: "/:type(images|videos)/:name(\\d+\\.\\w+)",
+      name: "file",
+      component: FilePage,
+      alias: "/:type(albums)/:id(\\d+)/:name(\\d+\\.\\w+)",
     },
     {
       path: "*",
